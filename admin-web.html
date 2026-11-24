@@ -191,7 +191,19 @@
   .toast{background:rgba(20,19,30,.92);border:1px solid color-mix(in srgb,var(--brand-2) 20%,transparent)}
   .toast.show{transition:opacity .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}  .bimg{height:110px;margin:-18px -18px 14px;border-radius:16px 16px 0 0;background-size:cover;background-position:center;position:relative}
   .bimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(6,6,8,.75));border-radius:inherit}
-  #revChart rect{transform-box:fill-box;transform-origin:bottom;animation:grow .9s cubic-bezier(.16,1,.3,1) both}</style>
+  #revChart rect{transform-box:fill-box;transform-origin:bottom;animation:grow .9s cubic-bezier(.16,1,.3,1) both}  /* glass edge: light-catching gradient rim, drawn as a masked 1px ring over the border */
+  .card,.kpi,.hero,.opt,.quick button,.tune,a.card,.sheet .panel,.strip figure,.photo-card{position:relative;border-color:transparent!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),inset 0 -1px 0 rgba(0,0,0,.25),0 12px 30px -8px rgba(0,0,0,.55)}
+  .card::before,.kpi::before,.hero::before,.opt::before,.quick button::before,.tune::before,a.card::before,.sheet .panel::before,.strip figure::before{
+    content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+    background:linear-gradient(150deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,.10) 22%,rgba(255,255,255,.03) 50%,rgba(255,255,255,.05) 78%,color-mix(in srgb,var(--brand-2) 38%,transparent) 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+    transition:opacity .3s}
+  .photo-card{border:1px solid transparent}
+  @media (hover:hover){.card:hover::before,.kpi:hover::before,.opt:hover::before,a.card:hover::before{background:linear-gradient(150deg,rgba(255,255,255,.5) 0%,color-mix(in srgb,var(--brand-2) 40%,transparent) 45%,color-mix(in srgb,var(--brand) 60%,transparent) 100%)}}
+  .opt.on::before{background:linear-gradient(150deg,var(--brand-2),var(--brand) 60%,color-mix(in srgb,var(--brand) 40%,transparent))}
+  .hero > *,.card > *,.kpi > *{position:relative}
+</style>
 </head>
 <body data-title-suffix="Admin console">
 <div class="app">
