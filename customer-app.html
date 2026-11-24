@@ -194,7 +194,9 @@
   .toast{background:rgba(20,19,30,.92);border:1px solid rgba(184,174,247,.2)}
   .toast.show{transition:opacity .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}  .opt .ic{width:56px;height:56px;padding:0;overflow:hidden;border-radius:14px}
   .opt .ic img{width:100%;height:100%;object-fit:cover;display:block}
-  .hero.photo{background-size:cover;background-position:center;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end}
+  .hero.photo{background-size:cover;background-position:center;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start}
+  .hero.photo .bar,.hero.photo>small:last-child{align-self:stretch}
+  .hero.photo .pill{display:inline-block;margin-top:2px}
   .ev-img{height:128px;border-radius:14px;background-size:cover;background-position:center;position:relative;margin-bottom:12px}
   .ev-img .date{position:absolute;left:10px;top:10px;background:rgba(6,6,8,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff}
   .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px;padding:0 18px 4px;scrollbar-width:none}
@@ -228,7 +230,7 @@
           <div class="hero">
             <small>Dedicated desk &middot; Madhapur</small>
             <div class="big">Desk D-14 &middot; Active</div>
-            <span class="pill">Renews 02 Dec</span><span class="pill">24/7 access</span>
+            <div><span class="pill">Renews 02 Dec</span><span class="pill">24/7 access</span></div>
             <div class="bar"><i style="width:68%"></i></div>
             <small style="display:block;margin-top:6px">Used 14 of 20 workdays this month</small>
           </div>
