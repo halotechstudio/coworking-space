@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&family=Doto:wght@700;800&display=swap" rel="stylesheet">
-<title>CoKarma Admin Console</title>
+<title>Coworking Space · Admin console</title>
 <style>
   :root{
     --bg:#0a0a0c; --card:rgba(24,24,31,.55); --ink:#f4f1ea; --muted:#9b978c; --line:rgba(255,255,255,.08); --side:rgba(12,12,16,.6); --side-ink:#c9c5ba;
@@ -121,7 +121,7 @@
     .table-wrap{overflow-x:auto}
   }
   /* frosted glass layer */
-  body{background-image:radial-gradient(circle at 15% 0%,rgba(106,76,245,.22),transparent 40%),radial-gradient(circle at 90% 100%,rgba(184,174,247,.12),transparent 45%)}
+  body{background-image:radial-gradient(circle at 15% 0%,color-mix(in srgb,var(--brand) 22%,transparent),transparent 40%),radial-gradient(circle at 90% 100%,color-mix(in srgb,var(--brand-2) 12%,transparent),transparent 45%)}
   .card,.top,aside{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%)}
   .card,.top,aside{border-color:rgba(255,255,255,.10)}
   .top{background:rgba(14,14,18,.5)}
@@ -129,39 +129,39 @@
   .btn.ghost{color:var(--ink)}
   .btn.bad{color:#fff}
   .logo{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
-  .nav a.on{background:rgba(106,76,245,.22)}
-  .av,.ico{background:rgba(106,76,245,.16)}
-  tbody tr:hover td{background:rgba(106,76,245,.06)}
+  .nav a.on{background:color-mix(in srgb,var(--brand) 22%,transparent)}
+  .av,.ico{background:color-mix(in srgb,var(--brand) 16%,transparent)}
+  tbody tr:hover td{background:color-mix(in srgb,var(--brand) 6%,transparent)}
   /* polish layer */
   body{font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   input,select,textarea,button{font-family:inherit}
   h1,h2,h3{letter-spacing:-.02em;font-weight:700;text-wrap:balance}
-  ::selection{background:rgba(106,76,245,.35);color:#fff}
+  ::selection{background:color-mix(in srgb,var(--brand) 35%,transparent);color:#fff}
   input,textarea{caret-color:var(--brand)}
   :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
   *{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent}
   select option{background:#15151b;color:#f4f1ea}
   b,.big,.kpi b,td,.pr,.inv,.sum,.zone b,.t{font-variant-numeric:tabular-nums}
   button,a{transition:background-color .2s cubic-bezier(.16,1,.3,1),border-color .2s,color .2s,transform .08s}
-  .screen{background:radial-gradient(circle at 15% 0%,rgba(106,76,245,.20),transparent 40%),radial-gradient(circle at 100% 70%,rgba(184,174,247,.10),transparent 45%),var(--bg)}
+  .screen{background:radial-gradient(circle at 15% 0%,color-mix(in srgb,var(--brand) 20%,transparent),transparent 40%),radial-gradient(circle at 100% 70%,color-mix(in srgb,var(--brand-2) 10%,transparent),transparent 45%),var(--bg)}
   .avatar,.me .av{color:#0a0a0c}
   .hero{box-shadow:0 14px 34px rgba(0,0,0,.45)}
   /* welno layer: Urbanist + dot-matrix numerals, violet on ink */
   :root{--bg:#060608;--card:rgba(20,19,30,.6);--ink:#f2f0ff;--muted:#9a95b8;--brand:#6a4cf5;--brand-2:#b8aef7;--ok:#7affd1;--bad:#ff4e41;--warn:#f5c542}
   body{font-family:"Urbanist",system-ui,-apple-system,"Segoe UI",sans-serif}
   h1,h2,h3{font-weight:500;letter-spacing:-.025em}
-  .btn,.seg button.on,.slots button.on,.dates button.on,.avatar,.me .av,.mark i{color:#fff}
+  .btn,.seg button.on,.slots button.on,.dates button.on,.avatar,.me .av,.mark i{color:var(--on-brand,#fff)}
   .btn{border-radius:999px}
   .btn.ghost{background:transparent;color:var(--ink);border:1px solid rgba(242,240,255,.22)}
   .btn.ok{color:#060608}
   .tag,.pill{background:transparent!important;border:1px solid currentColor}
   .tag.ok,.pill.p-ok{color:var(--ok)}
   .kpi b,#due,.zone b,.big-num{font-family:"Doto",ui-monospace,monospace;font-weight:800;letter-spacing:.02em}
-  .hero,.kpi{background-image:radial-gradient(120% 80% at 50% 125%,rgba(106,76,245,.42),transparent 62%)}
+  .hero,.kpi{background-image:radial-gradient(120% 80% at 50% 125%,color-mix(in srgb,var(--brand) 42%,transparent),transparent 62%)}
   .card{border-color:rgba(242,240,255,.08)}
-  ::selection{background:rgba(106,76,245,.45)}
+  ::selection{background:color-mix(in srgb,var(--brand) 45%,transparent)}
   /* motion + media layer */
-  :root{--warn:#b8aef7;--info:#b8aef7}
+  :root{--warn:var(--brand-2);--info:var(--brand-2)}
   @property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @keyframes grow{from{transform:scaleY(0)}}
@@ -180,7 +180,7 @@
   }
   .card,.kpi,.opt,.quick button,.zone,a.card{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .25s,background-color .25s,--p 1.1s cubic-bezier(.16,1,.3,1)}
   .card:active,.kpi:active,.quick button:active,.opt:active,.zone:active{transform:scale(.97)}
-  @media (hover:hover){.card:hover,.kpi:hover,.opt:hover{border-color:rgba(184,174,247,.3)}}
+  @media (hover:hover){.card:hover,.kpi:hover,.opt:hover{border-color:color-mix(in srgb,var(--brand-2) 30%,transparent)}}
   .btn,.quick button{position:relative;overflow:hidden}
   .rip{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.3);animation:rip .6s cubic-bezier(.16,1,.3,1) forwards;pointer-events:none}
   .nav button{position:relative}
@@ -188,19 +188,19 @@
   .nav button.on::before{width:22px}
   .nav button svg{transition:transform .35s cubic-bezier(.16,1,.3,1)}
   .nav button.on svg{transform:translateY(-2px)}
-  .toast{background:rgba(20,19,30,.92);border:1px solid rgba(184,174,247,.2)}
+  .toast{background:rgba(20,19,30,.92);border:1px solid color-mix(in srgb,var(--brand-2) 20%,transparent)}
   .toast.show{transition:opacity .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}  .bimg{height:110px;margin:-18px -18px 14px;border-radius:16px 16px 0 0;background-size:cover;background-position:center;position:relative}
   .bimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(6,6,8,.75));border-radius:inherit}
   #revChart rect{transform-box:fill-box;transform-origin:bottom;animation:grow .9s cubic-bezier(.16,1,.3,1) both}</style>
 </head>
-<body>
+<body data-title-suffix="Admin console">
 <div class="app">
   <aside>
-    <div class="brand"><div class="logo">C</div>CoKarma Admin</div>
+    <div class="brand"><div class="logo" data-brand-initial>C</div><span data-brand>Coworking Space</span></div>
     <nav class="nav" id="nav">
       <div class="grp">Overview</div>
       <a data-p="dash" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Dashboard</a>
-      <a data-p="branches"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>Branches<span class="cnt">8</span></a>
+      <a data-p="branches"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>Branches<span class="cnt">6</span></a>
       <div class="grp">Business</div>
       <a data-p="members"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7M17 11a3 3 0 100-6M22 21c0-2.5-1.5-5-4-5.5"/></svg>Members &amp; CRM<span class="cnt">412</span></a>
       <a data-p="plans"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></svg>Plans &amp; pricing</a>
@@ -214,14 +214,14 @@
       <a data-p="reports"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Reports</a>
       <a data-p="audit"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>Audit log</a>
     </nav>
-    <div class="me"><div class="av">PR</div><div><b style="color:#fff;font-size:13px">Praveen R.</b><small>Super admin · All branches</small></div></div>
+    <div class="me"><div class="av">RK</div><div><b style="color:#fff;font-size:13px">Riya K.</b><small>Super admin · All branches</small></div></div>
   </aside>
 
   <main>
     <div class="top">
       <h1 id="title">Dashboard</h1>
       <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="gsearch" placeholder="Search members, invoices, desks…"></div>
-      <select class="sel" id="branchSel"><option>All branches</option><option>Madhapur</option><option>HITEC City</option><option>Kondapur</option><option>Gachibowli</option><option>Kokapet</option></select>
+      <select class="sel" id="branchSel"><option>All branches</option><option>Central</option><option>Tech Park</option><option>Lakeside</option><option>Business Bay</option><option>Riverside</option></select>
       <select class="sel" id="rangeSel"><option>Last 30 days</option><option>This quarter</option><option>This year</option></select>
       <button class="btn" onclick="openModal('newMember')">+ New member</button>
     </div>
@@ -347,18 +347,18 @@
           <div class="card" style="padding:0"><div class="table-wrap"><table>
             <thead><tr><th>Name</th><th>Role</th><th>Branch</th><th>Shift</th></tr></thead>
             <tbody>
-              <tr><td><span class="av">MP</span>Madhapur Mgr</td><td>Branch manager</td><td>Madhapur</td><td>Day</td></tr>
-              <tr><td><span class="av">HK</span>Harika K.</td><td>Front desk</td><td>Madhapur</td><td>Day</td></tr>
-              <tr><td><span class="av">SN</span>Sunil N.</td><td>Facilities</td><td>HITEC City</td><td>Day</td></tr>
+              <tr><td><span class="av">MP</span>Central Mgr</td><td>Branch manager</td><td>Central</td><td>Day</td></tr>
+              <tr><td><span class="av">HK</span>Harika K.</td><td>Front desk</td><td>Central</td><td>Day</td></tr>
+              <tr><td><span class="av">SN</span>Sunil N.</td><td>Facilities</td><td>Tech Park</td><td>Day</td></tr>
               <tr><td><span class="av">AV</span>Asha V.</td><td>Community lead</td><td>All</td><td>Flex</td></tr>
             </tbody></table></div></div>
           <div class="card">
             <h3>Roles &amp; permissions</h3><div class="sub">4 roles (sample)</div>
             <table><thead><tr><th>Permission</th><th>Admin</th><th>Manager</th><th>Staff</th></tr></thead><tbody>
-              <tr><td>Revenue &amp; reports</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td>&#8211;</td><td>&#8211;</td></tr>
-              <tr><td>Approve bookings</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td></tr>
-              <tr><td>Issue refunds</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td>&#8211;</td></tr>
-              <tr><td>Door overrides</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6a4cf5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td></tr>
+              <tr><td>Revenue &amp; reports</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td>&#8211;</td><td>&#8211;</td></tr>
+              <tr><td>Approve bookings</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td></tr>
+              <tr><td>Issue refunds</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td>&#8211;</td></tr>
+              <tr><td>Door overrides</td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td><td><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color:var(--brand)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-label="Allowed"><path d="M5 12l5 5 9-10"/></svg></td></tr>
             </tbody></table>
           </div>
         </div>
@@ -384,11 +384,11 @@
         <div class="card" style="padding:0"><div class="table-wrap"><table>
           <thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Object</th><th>Branch</th></tr></thead>
           <tbody>
-            <tr><td>24 Nov, 10:14</td><td>Harika K.</td><td>Checked in member</td><td>Ananya R.</td><td>Madhapur</td></tr>
-            <tr><td>24 Nov, 09:58</td><td>Madhapur Mgr</td><td>Approved booking</td><td>Vrinda Labs · Lotus</td><td>Madhapur</td></tr>
+            <tr><td>24 Nov, 10:14</td><td>Harika K.</td><td>Checked in member</td><td>Ananya R.</td><td>Central</td></tr>
+            <tr><td>24 Nov, 09:58</td><td>Central Mgr</td><td>Approved booking</td><td>Vrinda Labs · Lotus</td><td>Central</td></tr>
             <tr><td>24 Nov, 09:31</td><td>Admin</td><td>Changed plan price</td><td>Dedicated desk</td><td>All</td></tr>
-            <tr><td>23 Nov, 18:02</td><td>Sunil N.</td><td>Marked seat maintenance</td><td>D-19</td><td>HITEC City</td></tr>
-            <tr><td>23 Nov, 16:45</td><td>Admin</td><td>Refund issued</td><td>INV-2610-0029 · ₹1,200</td><td>Kondapur</td></tr>
+            <tr><td>23 Nov, 18:02</td><td>Sunil N.</td><td>Marked seat maintenance</td><td>D-19</td><td>Tech Park</td></tr>
+            <tr><td>23 Nov, 16:45</td><td>Admin</td><td>Refund issued</td><td>INV-2610-0029 · ₹1,200</td><td>Lakeside</td></tr>
           </tbody></table></div></div>
       </section>
     </div>
@@ -413,21 +413,21 @@ function toast(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 
 /* ---------- data ---------- */
 const BRANCHES=[
-  {n:'Madhapur',occ:82,rev:'₹11.2L',cap:'120 seats',st:'ok'},
-  {n:'HITEC City',occ:76,rev:'₹9.8L',cap:'140 seats',st:'ok'},
-  {n:'Kondapur',occ:64,rev:'₹7.1L',cap:'90 seats',st:'warn'},
-  {n:'Gachibowli',occ:71,rev:'₹8.4L',cap:'110 seats',st:'ok'},
-  {n:'Kokapet',occ:48,rev:'₹4.6L',cap:'80 seats',st:'bad'},
-  {n:'Financial District',occ:59,rev:'₹5.9L',cap:'75 seats',st:'warn'}
+  {n:'Central',occ:82,rev:'₹11.2L',cap:'120 seats',st:'ok'},
+  {n:'Tech Park',occ:76,rev:'₹9.8L',cap:'140 seats',st:'ok'},
+  {n:'Lakeside',occ:64,rev:'₹7.1L',cap:'90 seats',st:'warn'},
+  {n:'Business Bay',occ:71,rev:'₹8.4L',cap:'110 seats',st:'ok'},
+  {n:'Riverside',occ:48,rev:'₹4.6L',cap:'80 seats',st:'bad'},
+  {n:'Old Town',occ:59,rev:'₹5.9L',cap:'75 seats',st:'warn'}
 ];
 const MEMBERS=[
-  {n:'Ananya Rao',c:'Vrinda Labs',p:'Dedicated desk',b:'Madhapur',s:'active',d:0},
-  {n:'Kiran Mehta',c:'Vrinda Labs',p:'Dedicated desk',b:'Madhapur',s:'active',d:8999},
-  {n:'Mohd. Irfan',c:'CodeNest',p:'Cabin 2',b:'Madhapur',s:'active',d:15200},
-  {n:'Divya Tripathi',c:'Freelance',p:'Hot desk (10)',b:'HITEC City',s:'trial',d:0},
-  {n:'Sameer Joshi',c:'Joshi Analytics',p:'Hot desk (20)',b:'Kondapur',s:'overdue',d:2400},
-  {n:'Neha Prasad',c:'Pixelcraft',p:'Dedicated desk',b:'Gachibowli',s:'active',d:0},
-  {n:'Rohan Das',c:'Seed Ventures',p:'Private office (4)',b:'Kokapet',s:'overdue',d:38000}
+  {n:'Ananya Rao',c:'Vrinda Labs',p:'Dedicated desk',b:'Central',s:'active',d:0},
+  {n:'Kiran Mehta',c:'Vrinda Labs',p:'Dedicated desk',b:'Central',s:'active',d:8999},
+  {n:'Mohd. Irfan',c:'CodeNest',p:'Cabin 2',b:'Central',s:'active',d:15200},
+  {n:'Divya Tripathi',c:'Freelance',p:'Hot desk (10)',b:'Tech Park',s:'trial',d:0},
+  {n:'Sameer Joshi',c:'Joshi Analytics',p:'Hot desk (20)',b:'Lakeside',s:'overdue',d:2400},
+  {n:'Neha Prasad',c:'Pixelcraft',p:'Dedicated desk',b:'Business Bay',s:'active',d:0},
+  {n:'Rohan Das',c:'Seed Ventures',p:'Private office (4)',b:'Riverside',s:'overdue',d:38000}
 ];
 const INVOICES=[
   {id:'INV-2611-0042',m:'Ananya Rao',i:'Dedicated desk · Nov',a:8999,s:'Unpaid',due:'30 Nov'},
@@ -438,17 +438,17 @@ const INVOICES=[
   {id:'INV-2611-0031',m:'Mohd. Irfan',i:'Cabin 2 · Nov',a:15200,s:'Paid',due:'30 Nov'}
 ];
 const INVENTORY=[
-  {i:'Coffee beans (kg)',b:'Madhapur',q:4,min:5},{i:'Oat milk (L)',b:'Madhapur',q:0,min:6},{i:'Tea bags',b:'HITEC City',q:120,min:60},{i:'Paper cups',b:'Kondapur',q:150,min:200},{i:'A4 paper (reams)',b:'Gachibowli',q:18,min:10}
+  {i:'Coffee beans (kg)',b:'Central',q:4,min:5},{i:'Oat milk (L)',b:'Central',q:0,min:6},{i:'Tea bags',b:'Tech Park',q:120,min:60},{i:'Paper cups',b:'Lakeside',q:150,min:200},{i:'A4 paper (reams)',b:'Business Bay',q:18,min:10}
 ];
 const DOORS=[
-  {d:'Main gate',b:'Madhapur',s:'Online',a:'Members 24/7'},{d:'Lotus room',b:'Madhapur',s:'Online',a:'Booking holders'},{d:'Cabin 2',b:'Madhapur',s:'Online',a:'Cabin tenant'},{d:'Main gate',b:'Kokapet',s:'Offline',a:'Members 24/7'},{d:'Cafe door',b:'HITEC City',s:'Online',a:'All members'}
+  {d:'Main gate',b:'Central',s:'Online',a:'Members 24/7'},{d:'Lotus room',b:'Central',s:'Online',a:'Booking holders'},{d:'Cabin 2',b:'Central',s:'Online',a:'Cabin tenant'},{d:'Main gate',b:'Riverside',s:'Offline',a:'Members 24/7'},{d:'Cafe door',b:'Tech Park',s:'Online',a:'All members'}
 ];
 const TICKETS=[
-  {t:'Desk lamp flickers',c:'Maintenance',m:'Ananya Rao',b:'Madhapur',p:'Normal',a:'Sunil N.',s:'In progress'},
-  {t:'AC too cold in Banyan room',c:'Facilities',m:'Divya Tripathi',b:'HITEC City',p:'Urgent',a:'Unassigned',s:'Open'},
-  {t:'Wi-Fi slow on floor 2',c:'IT',m:'Kiran Mehta',b:'Madhapur',p:'Normal',a:'Harika K.',s:'In progress'},
-  {t:'Oat milk out of stock',c:'Cafe',m:'Front desk',b:'Madhapur',p:'Normal',a:'Asha V.',s:'Open'},
-  {t:'Projector not detected',c:'IT',m:'Neha Prasad',b:'Gachibowli',p:'Urgent',a:'Sunil N.',s:'Open'}
+  {t:'Desk lamp flickers',c:'Maintenance',m:'Ananya Rao',b:'Central',p:'Normal',a:'Sunil N.',s:'In progress'},
+  {t:'AC too cold in Banyan room',c:'Facilities',m:'Divya Tripathi',b:'Tech Park',p:'Urgent',a:'Unassigned',s:'Open'},
+  {t:'Wi-Fi slow on floor 2',c:'IT',m:'Kiran Mehta',b:'Central',p:'Normal',a:'Harika K.',s:'In progress'},
+  {t:'Oat milk out of stock',c:'Cafe',m:'Front desk',b:'Central',p:'Normal',a:'Asha V.',s:'Open'},
+  {t:'Projector not detected',c:'IT',m:'Neha Prasad',b:'Business Bay',p:'Urgent',a:'Sunil N.',s:'Open'}
 ];
 const PLANS=[
   {n:'Hot desk',p:'₹4,999',u:'/mo · flexible',f:['Any open desk','Business hours','Locker 1 month/yr','2 meeting hrs']},
@@ -499,11 +499,11 @@ function renderPlans(){
 }
 function renderFeed(){
   const items=[
-    ['var(--ok)','Ananya Rao checked in','Madhapur · 10:14'],
-    ['var(--info)','Booking approved · Lotus room','Madhapur · 09:58'],
-    ['var(--warn)','Invoice overdue · Rohan Das','Kokapet · 09:00'],
-    ['var(--bad)','Door offline · Main gate','Kokapet · 08:41'],
-    ['var(--brand)','New member joined · Pixelcraft','Gachibowli · Yesterday']
+    ['var(--ok)','Ananya Rao checked in','Central · 10:14'],
+    ['var(--info)','Booking approved · Lotus room','Central · 09:58'],
+    ['var(--warn)','Invoice overdue · Rohan Das','Riverside · 09:00'],
+    ['var(--bad)','Door offline · Main gate','Riverside · 08:41'],
+    ['var(--brand)','New member joined · Pixelcraft','Business Bay · Yesterday']
   ];
   document.getElementById('feed').innerHTML=items.map(i=>`<li><span class="dot" style="background:${i[0]}"></span><div>${i[1]}<small>${i[2]}</small></div></li>`).join('');
   document.getElementById('mix').innerHTML=[['Dedicated desk',46,'var(--brand)'],['Hot desk',28,'var(--info)'],['Private cabin',14,'var(--ok)'],['Virtual office',12,'var(--warn)']].map(m=>`<div><div style="display:flex;justify-content:space-between;font-size:13px"><span>${m[0]}</span><b>${m[1]}%</b></div><div style="height:8px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${m[1]}%;background:${m[2]}"></i></div></div>`).join('');
@@ -525,7 +525,7 @@ function renderRevenue(){
   let pts=months.map((m,i)=>[40+i*((w-60)/6)+bw/2,pad+(h-2*pad)*(1-occ[i]/100)]);
   s+=`<polyline fill="none" stroke="var(--warn)" stroke-width="2.5" points="${pts.map(p=>p.join(',')).join(' ')}"/>`;
   pts.forEach(p=>s+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="var(--card)" stroke="var(--warn)" stroke-width="2"/>`);
-  s+=`<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b8aef7"/><stop offset="1" stop-color="#6a4cf5"/></linearGradient></defs></svg>`;
+  s+=`<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--brand-2)"/><stop offset="1" style="stop-color:var(--brand)"/></linearGradient></defs></svg>`;
   document.getElementById('revChart').innerHTML=s;
 }
 
@@ -539,7 +539,7 @@ function openModal(kind){
         <label class="f">Company<input placeholder="Company / freelancer"></label>
         <label class="f">Email<input placeholder="name@company.com"></label>
         <label class="f">Phone<input placeholder="+91"></label>
-        <label class="f">Branch<select><option>Madhapur</option><option>HITEC City</option><option>Kondapur</option><option>Gachibowli</option></select></label>
+        <label class="f">Branch<select><option>Central</option><option>Tech Park</option><option>Lakeside</option><option>Business Bay</option></select></label>
         <label class="f">Plan<select><option>Dedicated desk · ₹8,999</option><option>Hot desk · ₹4,999</option><option>Private cabin · ₹38,000</option><option>Virtual office · ₹1,499</option></select></label>
       </div>
       <div class="foot"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveMember()">Create member</button></div>`;
@@ -549,7 +549,7 @@ function openModal(kind){
 function saveMember(){
   const n=document.getElementById('nm-name').value.trim();
   if(!n){toast('Enter a name');return;}
-  MEMBERS.unshift({n,c:'New',p:'Dedicated desk',b:'Madhapur',s:'trial',d:0});
+  MEMBERS.unshift({n,c:'New',p:'Dedicated desk',b:'Central',s:'trial',d:0});
   closeModal();renderMembers();show('members');
   toast('Member created · onboarding link sent');
 }
@@ -587,5 +587,6 @@ const IMG=(id,w=800)=>`https://images.unsplash.com/photo-${id}?auto=format&fit=c
   const _show=show;show=function(p){_show(p);countUp()};
   countUp();
 })();
-</script></body>
+</script><script src="brand.js"></script>
+</body>
 </html>

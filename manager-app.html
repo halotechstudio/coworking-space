@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&family=Doto:wght@700;800&display=swap" rel="stylesheet">
-<title>CoKarma Manager App</title>
+<title>Coworking Space · Manager app</title>
 <style>
   :root{
     --bg:#0a0a0c; --card:rgba(24,24,31,.55); --ink:#f4f1ea; --muted:#9b978c; --line:rgba(255,255,255,.08);
@@ -96,55 +96,55 @@
   .bars{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:8px}
   .bars div{flex:1;background:linear-gradient(180deg,var(--brand-2),var(--brand));border-radius:6px 6px 2px 2px;min-height:6px}
   .bars span{font-size:9px;color:var(--muted);text-align:center;display:block;margin-top:4px}
-  @media (max-width:440px){
+  @media (max-width:520px){
     body{padding:0;background:var(--card)}
     .side{display:none}.stage{gap:0}
     .phone{width:100vw;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none}
     .screen{border-radius:0}.notch{display:none}
   }
   /* frosted glass layer */
-  body{background-image:radial-gradient(circle at 20% 10%,rgba(106,76,245,.22),transparent 42%),radial-gradient(circle at 85% 90%,rgba(184,174,247,.12),transparent 46%)}
+  body{background-image:radial-gradient(circle at 20% 10%,color-mix(in srgb,var(--brand) 22%,transparent),transparent 42%),radial-gradient(circle at 85% 90%,color-mix(in srgb,var(--brand-2) 12%,transparent),transparent 46%)}
   .card,.kpi,.nav,.toast,.sheet .panel{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%)}
   .card,.kpi,.nav,.sheet .panel{border-color:rgba(255,255,255,.10)}
   .btn{color:#0a0a0c}
   .btn.ghost{color:var(--ink)}
   .btn.bad{color:#fff}
   .seg button.on{color:#0a0a0c}
-  .av{background:rgba(106,76,245,.16);color:var(--brand)}
-  .tag.brand{background:rgba(106,76,245,.16);color:var(--brand)}
+  .av{background:color-mix(in srgb,var(--brand) 16%,transparent);color:var(--brand)}
+  .tag.brand{background:color-mix(in srgb,var(--brand) 16%,transparent);color:var(--brand)}
   /* polish layer */
   body{font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   input,select,textarea,button{font-family:inherit}
   h1,h2,h3{letter-spacing:-.02em;font-weight:700;text-wrap:balance}
-  ::selection{background:rgba(106,76,245,.35);color:#fff}
+  ::selection{background:color-mix(in srgb,var(--brand) 35%,transparent);color:#fff}
   input,textarea{caret-color:var(--brand)}
   :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
   *{scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.14) transparent}
   select option{background:#15151b;color:#f4f1ea}
   b,.big,.kpi b,td,.pr,.inv,.sum,.zone b,.t{font-variant-numeric:tabular-nums}
   button,a{transition:background-color .2s cubic-bezier(.16,1,.3,1),border-color .2s,color .2s,transform .08s}
-  .screen{background:radial-gradient(circle at 15% 0%,rgba(106,76,245,.20),transparent 40%),radial-gradient(circle at 100% 70%,rgba(184,174,247,.10),transparent 45%),var(--bg)}
+  .screen{background:radial-gradient(circle at 15% 0%,color-mix(in srgb,var(--brand) 20%,transparent),transparent 40%),radial-gradient(circle at 100% 70%,color-mix(in srgb,var(--brand-2) 10%,transparent),transparent 45%),var(--bg)}
   .avatar,.me .av{color:#0a0a0c}
   .hero{box-shadow:0 14px 34px rgba(0,0,0,.45)}
   /* welno layer: Urbanist + dot-matrix numerals, violet on ink */
   :root{--bg:#060608;--card:rgba(20,19,30,.6);--ink:#f2f0ff;--muted:#9a95b8;--brand:#6a4cf5;--brand-2:#b8aef7;--ok:#7affd1;--bad:#ff4e41;--warn:#f5c542}
   body{font-family:"Urbanist",system-ui,-apple-system,"Segoe UI",sans-serif}
   h1,h2,h3{font-weight:500;letter-spacing:-.025em}
-  .btn,.seg button.on,.slots button.on,.dates button.on,.avatar,.me .av,.mark i{color:#fff}
+  .btn,.seg button.on,.slots button.on,.dates button.on,.avatar,.me .av,.mark i{color:var(--on-brand,#fff)}
   .btn{border-radius:999px}
   .btn.ghost{background:transparent;color:var(--ink);border:1px solid rgba(242,240,255,.22)}
   .btn.ok{color:#060608}
   .tag,.pill{background:transparent!important;border:1px solid currentColor}
   .tag.ok,.pill.p-ok{color:var(--ok)}
   .kpi b,#due,.zone b,.big-num{font-family:"Doto",ui-monospace,monospace;font-weight:800;letter-spacing:.02em}
-  .hero,.kpi{background-image:radial-gradient(120% 80% at 50% 125%,rgba(106,76,245,.42),transparent 62%)}
+  .hero,.kpi{background-image:radial-gradient(120% 80% at 50% 125%,color-mix(in srgb,var(--brand) 42%,transparent),transparent 62%)}
   .card{border-color:rgba(242,240,255,.08)}
-  ::selection{background:rgba(106,76,245,.45)}
+  ::selection{background:color-mix(in srgb,var(--brand) 45%,transparent)}
   .zone{background:rgba(20,19,30,.6)!important;border:1px solid currentColor}
   .zone.hi{color:var(--bad)}.zone.mid{color:var(--warn)}.zone.lo{color:var(--ok)}
   .zone.sel{outline-color:var(--brand-2)}
   /* motion + media layer */
-  :root{--warn:#b8aef7;--info:#b8aef7}
+  :root{--warn:var(--brand-2);--info:var(--brand-2)}
   @property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   @keyframes grow{from{transform:scaleY(0)}}
@@ -163,7 +163,7 @@
   }
   .card,.kpi,.opt,.quick button,.zone,a.card{transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .25s,background-color .25s,--p 1.1s cubic-bezier(.16,1,.3,1)}
   .card:active,.kpi:active,.quick button:active,.opt:active,.zone:active{transform:scale(.97)}
-  @media (hover:hover){.card:hover,.kpi:hover,.opt:hover{border-color:rgba(184,174,247,.3)}}
+  @media (hover:hover){.card:hover,.kpi:hover,.opt:hover{border-color:color-mix(in srgb,var(--brand-2) 30%,transparent)}}
   .btn,.quick button{position:relative;overflow:hidden}
   .rip{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.3);animation:rip .6s cubic-bezier(.16,1,.3,1) forwards;pointer-events:none}
   .nav button{position:relative}
@@ -171,23 +171,23 @@
   .nav button.on::before{width:22px}
   .nav button svg{transition:transform .35s cubic-bezier(.16,1,.3,1)}
   .nav button.on svg{transform:translateY(-2px)}
-  .toast{background:rgba(20,19,30,.92);border:1px solid rgba(184,174,247,.2)}
+  .toast{background:rgba(20,19,30,.92);border:1px solid color-mix(in srgb,var(--brand-2) 20%,transparent)}
   .toast.show{transition:opacity .25s,transform .45s cubic-bezier(.34,1.56,.64,1)}  .photo-card{position:relative;height:150px;border-radius:20px;background-size:cover;background-position:center;margin-bottom:12px;overflow:hidden;border:1px solid rgba(242,240,255,.08);display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
-  .photo-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,8,.1),rgba(6,6,8,.85)),radial-gradient(120% 80% at 50% 130%,rgba(106,76,245,.55),transparent 60%)}
+  .photo-card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,6,8,.1),rgba(6,6,8,.85)),radial-gradient(120% 80% at 50% 130%,color-mix(in srgb,var(--brand) 55%,transparent),transparent 60%)}
   .photo-card>*{position:relative}
   .photo-card small{color:var(--muted);font-size:12px}
   .live{position:absolute!important;top:12px;left:12px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:999px;background:rgba(6,6,8,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;align-items:center;gap:6px}
   .live i{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 1.6s ease-in-out infinite}
   @keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
-  .zone,.zone.hi,.zone.mid,.zone.lo{color:var(--ink)!important;border-color:rgba(184,174,247,.22)!important;background-color:rgba(20,19,30,.6)!important;background-image:linear-gradient(to top,rgba(106,76,245,.6) var(--p),transparent var(--p))!important}
+  .zone,.zone.hi,.zone.mid,.zone.lo{color:var(--ink)!important;border-color:color-mix(in srgb,var(--brand-2) 22%,transparent)!important;background-color:rgba(20,19,30,.6)!important;background-image:linear-gradient(to top,color-mix(in srgb,var(--brand) 60%,transparent) var(--p),transparent var(--p))!important}
   .zone b{color:var(--brand-2)}</style>
 </head>
-<body>
+<body data-title-suffix="Manager app">
 <div class="stage">
   <div class="side">
-    <h1>CoKarma &middot; Manager app</h1>
+    <h1><span data-brand>Coworking Space</span> &middot; Manager app</h1>
     <p>Run the floor from your phone: live occupancy, guest approvals, booking requests, tickets, members, events and cafe stock. Tap around; all data is sample.</p>
-    <p><span class="chip">Branch: Madhapur</span><span class="chip">Shift: Day</span><span class="chip">Offline demo</span></p>
+    <p><span class="chip">Branch: <span data-branch>Central</span></span><span class="chip">Shift: Day</span><span class="chip">Offline demo</span></p>
     <a href="index.html">&larr; Back to hub</a>
   </div>
 
@@ -199,7 +199,7 @@
       <section class="view">
         <!-- FLOOR -->
         <div class="page active" data-page="floor">
-          <div class="hdr"><div><div class="hello">Madhapur &middot; Day shift</div><h2>Floor overview</h2></div><div class="avatar">MP</div></div>
+          <div class="hdr"><div><div class="hello"><span data-branch>Central</span> &middot; Day shift</div><h2>Floor overview</h2></div><div class="avatar">MP</div></div>
           <div class="kpis">
             <div class="kpi"><small>Occupancy now</small><b id="occ">64%</b><div class="d up">+6% vs last Tue</div></div>
             <div class="kpi"><small>Checked in</small><b id="cin">41</b><div class="d" style="color:var(--muted)">of 63 members on site</div></div>
@@ -540,7 +540,7 @@ const IMG=(id,w=800)=>`https://images.unsplash.com/photo-${id}?auto=format&fit=c
 })();
 </script><script>
 (()=>{
-  document.querySelector('[data-page=floor] .hdr').insertAdjacentHTML('afterend',`<div class="photo-card" style="background-image:url(${IMG('1527192491265-7e15c55b1ed2')})"><span class="live"><i></i>Live</span><b style="font-size:17px">Madhapur &middot; Floor 2</b><small>41 members in &middot; updated just now</small></div>`);
+  document.querySelector('[data-page=floor] .hdr').insertAdjacentHTML('afterend',`<div class="photo-card" style="background-image:url(${IMG('1527192491265-7e15c55b1ed2')})"><span class="live"><i></i>Live</span><b style="font-size:17px">Central &middot; Floor 2</b><small>41 members in &middot; updated just now</small></div>`);
   window.renderZones=function(){
     const el=document.getElementById('zones');
     el.innerHTML=zonesData.map(z=>`<button class="zone" data-p="${z.v}"><b>${z.v}%</b>${z.n}</button>`).join('');
@@ -551,5 +551,6 @@ const IMG=(id,w=800)=>`https://images.unsplash.com/photo-${id}?auto=format&fit=c
   const _go=go;go=function(p){_go(p);if(p==='floor')renderZones();countUp()};
   countUp();
 })();
-</script></body>
+</script><script src="brand.js"></script>
+</body>
 </html>

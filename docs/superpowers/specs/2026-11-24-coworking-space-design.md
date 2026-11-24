@@ -1,17 +1,16 @@
-# CoKarma Space Management: Design
+# Coworking Space Management: Design
 
-Status: drafted by Claude for presentation; calls marked **(my call)** are open to change.
+Status: white-label product demo by HALO Studio; calls marked **(my call)** are open to change.
 
 ## Intent and why
 
-CoKarma runs several coworking branches in Hyderabad (Madhapur, HITEC City, Kondapur, Gachibowli, Kokapet, Financial District, and more). Members, managers, and admins each run the space through different tools today. This product gives one system for the whole flow: a member finds and books a desk, gets in, pays, and asks for help; a branch manager runs the floor; an admin runs the business across branches.
+Multi-branch coworking operators run members, managers and the head office through separate tools. This product gives one system for the whole flow: a member finds and books a desk, gets in, pays, and asks for help; a branch manager runs the floor; an admin runs the business across branches. It is white label: any operator's name, colour and branches drop in through `brand.js` (or `?brand=&accent=&branch=` URL parameters for sales previews).
 
-## Research basis (public listings, Nov 2026)
+## Market basis
 
-- Several CoKarma branches in Hyderabad; Madhapur listed near Mahaveer Radiance / Inorbit Mall Road. Address conflicts exist across aggregators, so the sim uses a placeholder branch name, not a verified address.
-- Product types seen: dedicated desks, hot desks, private cabins, meeting rooms, day passes, monthly memberships with 24/7 access at some branches.
-- Amenities mentioned: complimentary coffee and tea, printer, outdoor areas, high-speed internet.
-- Indicative pricing from aggregators: roughly ₹6,000–₹11,000 per desk per month (dated; not official). The simulation uses sample prices, labelled as sample.
+- Typical product types: dedicated desks, hot desks, private cabins, meeting rooms, day passes, virtual office, monthly memberships with 24/7 access.
+- Typical amenities: coffee and tea, printing, lockers, outdoor areas, high-speed internet.
+- Indian desk pricing commonly sits around ₹5,000–₹11,000 per seat per month. The demo uses sample prices, labelled as sample.
 
 ## Goals
 
@@ -22,7 +21,7 @@ CoKarma runs several coworking branches in Hyderabad (Madhapur, HITEC City, Kond
 ## Non-goals
 
 - No real backend, payments, door hardware, or auth. Everything is mock data in the browser.
-- No real CoKarma branding or logo. Name used only as "CoKarma" in the demo context.
+- No operator's real branding. The default brand is the neutral "Coworking Space".
 
 ## Anti-goals
 
@@ -93,4 +92,4 @@ CoKarma runs several coworking branches in Hyderabad (Madhapur, HITEC City, Kond
 
 ## Next step
 
-Build three HTML files in `D:\CoKarma\` plus `index.html` hub. Verify each in the browser. The superpowers:writing-plans step is skipped for this sim (**my call**): the design is small enough to build directly, and the user asked for implementation tomorrow.
+Build three HTML files plus an `index.html` hub and a shared `brand.js`. Verify each in the browser. The superpowers:writing-plans step is skipped for this sim (**my call**): the design is small enough to build directly, and the user asked for implementation tomorrow.
