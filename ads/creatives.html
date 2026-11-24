@@ -27,6 +27,8 @@
     -webkit-mask-image:radial-gradient(70% 55% at 50% 62%,#000 0%,transparent 78%);mask-image:radial-gradient(70% 55% at 50% 62%,#000 0%,transparent 78%);opacity:.55}
   /* violet product glow behind devices */
   .glow{position:absolute;left:50%;width:1100px;height:900px;translate:-50% 0;background:radial-gradient(closest-side,rgba(106,76,245,.55),rgba(106,76,245,.12) 55%,transparent);filter:blur(10px)}
+  .ride .glow{background:radial-gradient(closest-side,rgba(199,255,46,.30),rgba(199,255,46,.07) 55%,transparent)}
+  .ride .chip i{background:#c7ff2e;box-shadow:0 0 12px #c7ff2e}
   .ring{position:absolute;left:50%;translate:-50% 0;width:900px;height:900px;border-radius:50%;border:1.5px solid rgba(255,255,255,.28);
     box-shadow:0 0 60px 6px rgba(255,255,255,.08),inset 0 0 60px 6px rgba(255,255,255,.05)}
   .beads{position:absolute;left:50%;translate:-50% 0;width:980px;height:980px}
@@ -96,9 +98,12 @@ const beads = (top) => {
 };
 const phone = (img, x, y, w, rot = 0, z = 3) => `<div class="phone" style="left:${x}px;top:${y}px;--pw:${w}px;rotate:${rot}deg;z-index:${z}"><img src="${A}${img}.webp"></div>`;
 const desk = (img, x, y, w, rot = 0) => `<div class="desk" style="left:${x}px;top:${y}px;--dw:${w}px;rotate:${rot}deg"><div class="bar"><i></i><i></i><i></i></div><img src="${A}${img}.webp"></div>`;
-const deal = (y, line) => `<div class="deal" style="top:${y}px"><div><div class="price">₹1.49L</div></div><div class="terms">${line}</div><div class="cta">Get the demo <span>→</span></div></div>`;
+const RIDE = C.startsWith('ride');
+if (RIDE) document.body.classList.add('ride');
+const PRICE = RIDE ? '₹4.99L' : '₹1.49L';
+const deal = (y, line) => `<div class="deal" style="top:${y}px"><div><div class="price">${PRICE}</div></div><div class="terms">${line}</div><div class="cta">Get the demo <span>→</span></div></div>`;
 
-let html = `<div class="top">${logo}<span class="tag">Coworking app</span></div>`;
+let html = `<div class="top">${logo}<span class="tag">${RIDE ? 'Ride-hailing app' : 'Coworking app'}</span></div>`;
 // vertical rhythm per format: story keeps text out of the top ~250px and bottom ~340px UI zones
 const T = story ? 260 : 170, DEAL = story ? 1500 : 1166;
 
@@ -138,6 +143,26 @@ if (C === 'features') {
   const c = (t, x, y) => `<div class="chip" style="left:${x}px;top:${y}px"><i></i>${t}</div>`;
   html += `<div class="chips">${c('Desk &amp; room booking', 70, dy + 60)}${c('QR door pass', 760, dy + 120)}${c('GST invoices', 90, dy + 280)}${c('Visitor approvals', 730, dy + 340)}${c('Events &amp; RSVPs', 110, dy + 440)}${c('Multi-branch dashboard', 620, dy + 480)}</div>`;
   html += deal(DEAL, '<b>Live in 3 weeks</b><br>Under your own brand');
+}
+
+if (C === 'ride-offer') {
+  html += `<div class="head" style="top:${T}px"><span class="badge"><i></i>Store-ready in 3 weeks</span>
+    <h1 style="margin-top:28px">Your own <span class="chrome">ride-hailing app.</span><br><span class="soft">Built for your city.</span></h1></div>`;
+  const dy = story ? 820 : 640;
+  html += `<div class="glow" style="top:${dy - 120}px"></div><div class="ring" style="top:${dy - 160}px"></div>${beads(dy - 200)}`;
+  html += desk('ride-admin-overview', 150, dy + 10, 780, 0);
+  html += phone('ride-captain-request', 70, dy + 90, 250, -7, 3) + phone('ride-rider-captain_assigned', 760, dy + 70, 260, 6, 4);
+  html += deal(DEAL, '<b>Rider, captain &amp; admin apps</b><br>Your brand · Android &amp; iOS');
+}
+
+if (C === 'ride-features') {
+  html += `<div class="head" style="top:${T}px"><h1>Everything a ride-hailing business runs on. <span class="chrome">One platform.</span></h1></div>`;
+  const dy = story ? 860 : 600;
+  html += `<div class="glow" style="top:${dy - 80}px"></div><div class="ring" style="top:${dy - 100}px"></div>${beads(dy - 140)}`;
+  html += phone('ride-rider-choose_ride', 375, dy, 330, 0, 3);
+  const c = (t, x, y) => `<div class="chip" style="left:${x}px;top:${y}px"><i></i>${t}</div>`;
+  html += `<div class="chips">${c('Rider app', 120, dy + 60)}${c('Captain app', 760, dy + 120)}${c('Fixed fares', 110, dy + 260)}${c('Ride OTP', 790, dy + 320)}${c('Live fleet console', 70, dy + 420)}${c('Captain earnings', 690, dy + 460)}</div>`;
+  html += deal(DEAL, '<b>Store-ready in 3 weeks</b><br>Under your own brand');
 }
 
 document.getElementById('ad').innerHTML = html;
