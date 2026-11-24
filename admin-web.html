@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CoKarma Admin Console</title>
+<style>
+  :root{
+    --bg:#0a0a0c; --card:rgba(24,24,31,.55); --ink:#f4f1ea; --muted:#9b978c; --line:rgba(255,255,255,.08); --side:rgba(12,12,16,.6); --side-ink:#c9c5ba;
+    --brand:#ff7a1a; --brand-2:#ffb35c; --ok:#16a870; --warn:#f5c542; --bad:#e04d5b; --info:#3b82f6;
+    --shadow:0 10px 30px rgba(0,0,0,.45); --r:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px}
+  .app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+  aside{background:var(--side);color:var(--side-ink);padding:20px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .brand{display:flex;align-items:center;gap:10px;padding:6px 10px 18px;color:#fff;font-weight:700;font-size:16px}
+  .logo{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--brand),#c05cff);display:flex;align-items:center;justify-content:center;font-size:15px}
+  .grp{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#6c7299;margin:18px 10px 6px}
+  .nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;color:var(--side-ink);text-decoration:none;cursor:pointer;margin-bottom:2px;font-size:13.5px}
+  .nav a svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;flex:none}
+  .nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .nav a.on{background:rgba(91,75,255,.22);color:#fff}
+  .nav .cnt{margin-left:auto;background:rgba(255,255,255,.12);border-radius:999px;font-size:11px;padding:1px 7px}
+  .me{margin-top:24px;display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;background:rgba(255,255,255,.04)}
+  .me .av{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+  .me small{display:block;color:#6c7299;font-size:11px}
+
+  main{min-width:0}
+  .top{display:flex;align-items:center;gap:12px;padding:16px 28px;border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
+  .top h1{font-size:19px;letter-spacing:-.01em;flex:1}
+  .search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 12px;width:280px}
+  .search input{border:0;background:none;outline:none;color:var(--ink);font:inherit;width:100%}
+  .sel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;color:var(--ink);font:inherit}
+  .content{padding:24px 28px 40px}
+  .page{display:none}.page.on{display:block}
+
+  .btn{border:0;border-radius:12px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer;background:var(--brand);color:#fff;white-space:nowrap}
+  .btn:hover{filter:brightness(1.06)}
+  .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .btn.sm{padding:6px 10px;font-size:12px}
+  .btn.bad{background:var(--bad)}
+
+  .grid{display:grid;gap:16px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g2{grid-template-columns:2fr 1fr}
+  .g2e{grid-template-columns:1fr 1fr}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
+  .card h3{font-size:14px;margin-bottom:4px}
+  .card .sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+  .kpi small{color:var(--muted);font-size:12.5px}
+  .kpi b{display:block;font-size:26px;margin:6px 0 4px;letter-spacing:-.02em}
+  .delta{font-size:12px;font-weight:600}
+  .delta.up{color:var(--ok)}.delta.down{color:var(--bad)}
+  .hdrrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+  .hdrrow h2{font-size:16px}
+  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+  .toolbar .search{width:260px}
+
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:10px 12px;border-bottom:1px solid var(--line)}
+  td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr:last-child td{border-bottom:0}
+  tbody tr{cursor:pointer}
+  tbody tr:hover td{background:rgba(91,75,255,.04)}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .p-ok{background:rgba(20,160,108,.12);color:var(--ok)}
+  .p-warn{background:rgba(230,150,26,.14);color:var(--warn)}
+  .p-bad{background:rgba(222,74,88,.12);color:var(--bad)}
+  .p-info{background:rgba(59,130,246,.12);color:var(--info)}
+  .p-mute{background:var(--bg);color:var(--muted)}
+  .av{width:30px;height:30px;border-radius:50%;background:rgba(91,75,255,.14);color:var(--brand);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;margin-right:10px;vertical-align:middle}
+
+  .chart{height:230px;position:relative;margin-top:6px}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--muted)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .branch{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card)}
+  .branch .bar{height:8px;background:var(--bg);border-radius:8px;overflow:hidden;margin:10px 0 6px}
+  .branch .bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+  .feed li{list-style:none;display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .feed li:last-child{border:0}
+  .feed .dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:none}
+  .feed small{color:var(--muted);display:block;font-size:11.5px}
+  .ico{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(91,75,255,.12);color:var(--brand);font-weight:700}
+
+  /* modal */
+  .scrim{position:fixed;inset:0;background:rgba(8,10,22,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .scrim.on{display:flex}
+  .modal{background:var(--card);border-radius:20px;width:min(560px,100%);box-shadow:0 30px 80px rgba(0,0,0,.4);padding:22px}
+  .modal h3{font-size:17px;margin-bottom:4px}
+  .modal .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .f{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--muted)}
+  .f.full{grid-column:1/-1}
+  .f input,.f select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;outline:none}
+  .foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+  .toast{position:fixed;bottom:24px;right:24px;background:#141829;color:#fff;padding:12px 16px;border-radius:12px;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:60}
+  .toast.show{opacity:1;transform:none}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px}
+  .tabs button{background:none;border:0;padding:10px 12px;color:var(--muted);font:inherit;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tabs button.on{color:var(--brand);border-color:var(--brand)}
+  .switch{width:38px;height:22px;border-radius:999px;background:var(--line);position:relative;display:inline-block;cursor:pointer}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+  .switch.on{background:var(--ok)}.switch.on::after{left:19px}
+  .empty{color:var(--muted);padding:24px;text-align:center}
+
+  @media (max-width:1100px){ .g4{grid-template-columns:repeat(2,1fr)} .g2,.g2e{grid-template-columns:1fr} }
+  @media (max-width:820px){
+    .app{grid-template-columns:1fr}
+    aside{position:static;height:auto;display:flex;overflow-x:auto;padding:10px;gap:4px}
+    .brand,.grp,.me{display:none}
+    .nav{display:flex;gap:4px}
+    .nav a{white-space:nowrap}
+    .top{padding:14px 16px;flex-wrap:wrap}
+    .search{width:100%;order:3}
+    .content{padding:16px}
+    .fgrid{grid-template-columns:1fr}
+    .table-wrap{overflow-x:auto}
+  }
+  /* frosted glass layer */
+  body{background-image:radial-gradient(circle at 15% 0%,rgba(255,122,26,.22),transparent 40%),radial-gradient(circle at 90% 100%,rgba(255,179,92,.12),transparent 45%)}
+  .card,.top,aside{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%)}
+  .card,.top,aside{border-color:rgba(255,255,255,.10)}
+  .top{background:rgba(14,14,18,.5)}
+  .btn{color:#0a0a0c}
+  .btn.ghost{color:var(--ink)}
+  .btn.bad{color:#fff}
+  .logo{background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+  .nav a.on{background:rgba(255,122,26,.22)}
+  .av,.ico{background:rgba(255,122,26,.16)}
+  tbody tr:hover td{background:rgba(255,122,26,.06)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="logo">C</div>CoKarma Admin</div>
+    <nav class="nav" id="nav">
+      <div class="grp">Overview</div>
+      <a data-p="dash" class="on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Dashboard</a>
+      <a data-p="branches"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg>Branches<span class="cnt">8</span></a>
+      <div class="grp">Business</div>
+      <a data-p="members"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7M17 11a3 3 0 100-6M22 21c0-2.5-1.5-5-4-5.5"/></svg>Members &amp; CRM<span class="cnt">412</span></a>
+      <a data-p="plans"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></svg>Plans &amp; pricing</a>
+      <a data-p="billing"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg>Billing<span class="cnt">14</span></a>
+      <a data-p="inventory"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z M3 7l9 4 9-4M12 11v10"/></svg>Inventory</a>
+      <div class="grp">Operations</div>
+      <a data-p="access"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Access &amp; devices</a>
+      <a data-p="tickets"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Service tickets<span class="cnt">9</span></a>
+      <a data-p="staff"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Staff &amp; roles</a>
+      <div class="grp">Insights</div>
+      <a data-p="reports"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Reports</a>
+      <a data-p="audit"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>Audit log</a>
+    </nav>
+    <div class="me"><div class="av">PR</div><div><b style="color:#fff;font-size:13px">Praveen R.</b><small>Super admin · All branches</small></div></div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <h1 id="title">Dashboard</h1>
+      <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="gsearch" placeholder="Search members, invoices, desks…"></div>
+      <select class="sel" id="branchSel"><option>All branches</option><option>Madhapur</option><option>HITEC City</option><option>Kondapur</option><option>Gachibowli</option><option>Kokapet</option></select>
+      <select class="sel" id="rangeSel"><option>Last 30 days</option><option>This quarter</option><option>This year</option></select>
+      <button class="btn" onclick="openModal('newMember')">+ New member</button>
+    </div>
+
+    <div class="content">
+      <!-- DASHBOARD -->
+      <section class="page on" data-page="dash">
+        <div class="grid g4" style="margin-bottom:16px">
+          <div class="card kpi"><small>Monthly revenue</small><b>&#8377;48.2L</b><span class="delta up">&#9650; 12.4% vs last month</span></div>
+          <div class="card kpi"><small>Occupancy (all branches)</small><b>71%</b><span class="delta up">&#9650; 4 pts</span></div>
+          <div class="card kpi"><small>Active members</small><b>412</b><span class="delta up">&#9650; 23 new this month</span></div>
+          <div class="card kpi"><small>Overdue invoices</small><b style="color:var(--warn)">&#8377;3.8L</b><span class="delta down">&#9660; 31 invoices</span></div>
+        </div>
+        <div class="grid g2" style="margin-bottom:16px">
+          <div class="card">
+            <div class="hdrrow"><div><h3>Revenue &amp; occupancy</h3><div class="sub">Monthly, all branches</div></div>
+              <div class="legend"><span><i style="background:var(--brand)"></i>Revenue (₹L)</span><span><i style="background:var(--line)"></i>Occupancy %</span></div></div>
+            <div class="chart" id="revChart"></div>
+          </div>
+          <div class="card">
+            <h3>Branch health</h3><div class="sub">Occupancy &middot; this week</div>
+            <div id="branchList" style="display:grid;gap:10px"></div>
+          </div>
+        </div>
+        <div class="grid g2e">
+          <div class="card">
+            <h3>Recent activity</h3><div class="sub">Across all branches</div>
+            <ul class="feed" id="feed"></ul>
+          </div>
+          <div class="card">
+            <h3>Plan mix</h3><div class="sub">Share of active members</div>
+            <div id="mix" style="display:grid;gap:12px"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRANCHES -->
+      <section class="page" data-page="branches">
+        <div class="hdrrow"><div><h2>Branches</h2></div><button class="btn" onclick="toast('New branch wizard opened (demo)')">+ Add branch</button></div>
+        <div class="grid g4" id="branchCards"></div>
+      </section>
+
+      <!-- MEMBERS -->
+      <section class="page" data-page="members">
+        <div class="toolbar">
+          <div class="tabs" style="border:0;margin:0"><button class="on" data-f="all">All</button><button data-f="active">Active</button><button data-f="trial">Trial</button><button data-f="overdue">Overdue</button></div>
+          <div style="flex:1"></div>
+          <button class="btn ghost" onclick="toast('CSV exported (demo)')">Export</button>
+        </div>
+        <div class="card" style="padding:0"><div class="table-wrap"><table>
+          <thead><tr><th>Member</th><th>Company</th><th>Plan</th><th>Branch</th><th>Status</th><th>Dues</th><th></th></tr></thead>
+          <tbody id="memBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- PLANS -->
+      <section class="page" data-page="plans">
+        <div class="hdrrow"><div><h2>Plans &amp; pricing</h2><div class="sub" style="color:var(--muted)">Sample prices. Per-branch overrides allowed.</div></div><button class="btn" onclick="toast('Plan editor (demo)')">+ New plan</button></div>
+        <div class="grid g4" id="planCards"></div>
+        <div class="card" style="margin-top:16px">
+          <h3>Add-ons &amp; discounts</h3><div class="sub">Applied at invoicing</div>
+          <table><thead><tr><th>Item</th><th>Type</th><th>Price / rule</th><th>Status</th></tr></thead><tbody>
+            <tr><td>Locker</td><td>Add-on</td><td>&#8377;500 / mo</td><td><span class="pill p-ok">Live</span></td></tr>
+            <tr><td>Extra meeting hours (pack of 5)</td><td>Add-on</td><td>&#8377;1,200</td><td><span class="pill p-ok">Live</span></td></tr>
+            <tr><td>Annual prepay</td><td>Discount</td><td>10% off</td><td><span class="pill p-ok">Live</span></td></tr>
+            <tr><td>Student referral</td><td>Discount</td><td>15% first month</td><td><span class="pill p-warn">Draft</span></td></tr>
+          </tbody></table>
+        </div>
+      </section>
+
+      <!-- BILLING -->
+      <section class="page" data-page="billing">
+        <div class="grid g4" style="margin-bottom:16px">
+          <div class="card kpi"><small>Invoiced (Nov)</small><b>&#8377;52.0L</b></div>
+          <div class="card kpi"><small>Collected</small><b>&#8377;43.8L</b></div>
+          <div class="card kpi"><small>Overdue</small><b style="color:var(--bad)">&#8377;3.8L</b></div>
+          <div class="card kpi"><small>GST collected</small><b>&#8377;7.9L</b></div>
+        </div>
+        <div class="card" style="padding:0"><div class="table-wrap"><table>
+          <thead><tr><th>Invoice</th><th>Member</th><th>Item</th><th>Amount</th><th>Status</th><th>Due</th><th></th></tr></thead>
+          <tbody id="invBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- INVENTORY -->
+      <section class="page" data-page="inventory">
+        <div class="hdrrow"><div><h2>Inventory &middot; Cafe &amp; supplies</h2></div><button class="btn" onclick="toast('Purchase order drafted (demo)')">+ Purchase order</button></div>
+        <div class="card" style="padding:0"><div class="table-wrap"><table>
+          <thead><tr><th>Item</th><th>Branch</th><th>On hand</th><th>Reorder at</th><th>Status</th><th></th></tr></thead>
+          <tbody id="invtBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ACCESS -->
+      <section class="page" data-page="access">
+        <div class="grid g2e">
+          <div class="card">
+            <h3>Doors &amp; smart locks</h3><div class="sub">Sim only: no hardware connected</div>
+            <table><thead><tr><th>Device</th><th>Branch</th><th>Status</th><th>Access</th></tr></thead><tbody id="doorBody"></tbody></table>
+          </div>
+          <div class="card">
+            <h3>Access rules</h3><div class="sub">Who can enter when</div>
+            <div style="display:grid;gap:14px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><div><b>24/7 access</b><div class="sub" style="margin:0">Dedicated desk &amp; monthly plans</div></div><span class="switch on" onclick="this.classList.toggle('on')"></span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><div><b>Visitor pass auto-expiry</b><div class="sub" style="margin:0">Expires at checkout time</div></div><span class="switch on" onclick="this.classList.toggle('on')"></span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><div><b>Block overdue members</b><div class="sub" style="margin:0">After 7 days past due</div></div><span class="switch" onclick="this.classList.toggle('on')"></span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TICKETS -->
+      <section class="page" data-page="tickets">
+        <div class="card" style="padding:0"><div class="table-wrap"><table>
+          <thead><tr><th>Ticket</th><th>Category</th><th>Member</th><th>Branch</th><th>Priority</th><th>Assignee</th><th>Status</th></tr></thead>
+          <tbody id="tktBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- STAFF -->
+      <section class="page" data-page="staff">
+        <div class="grid g2e">
+          <div class="card" style="padding:0"><div class="table-wrap"><table>
+            <thead><tr><th>Name</th><th>Role</th><th>Branch</th><th>Shift</th></tr></thead>
+            <tbody>
+              <tr><td><span class="av">MP</span>Madhapur Mgr</td><td>Branch manager</td><td>Madhapur</td><td>Day</td></tr>
+              <tr><td><span class="av">HK</span>Harika K.</td><td>Front desk</td><td>Madhapur</td><td>Day</td></tr>
+              <tr><td><span class="av">SN</span>Sunil N.</td><td>Facilities</td><td>HITEC City</td><td>Day</td></tr>
+              <tr><td><span class="av">AV</span>Asha V.</td><td>Community lead</td><td>All</td><td>Flex</td></tr>
+            </tbody></table></div></div>
+          <div class="card">
+            <h3>Roles &amp; permissions</h3><div class="sub">4 roles (sample)</div>
+            <table><thead><tr><th>Permission</th><th>Admin</th><th>Manager</th><th>Staff</th></tr></thead><tbody>
+              <tr><td>Revenue &amp; reports</td><td>&#10003;</td><td>&#8211;</td><td>&#8211;</td></tr>
+              <tr><td>Approve bookings</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+              <tr><td>Issue refunds</td><td>&#10003;</td><td>&#10003;</td><td>&#8211;</td></tr>
+              <tr><td>Door overrides</td><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section class="page" data-page="reports">
+        <div class="grid g2e">
+          <div class="card"><h3>Utilisation by desk type</h3><div class="sub">Share of paid capacity used</div><div id="utilBars" style="display:grid;gap:14px"></div></div>
+          <div class="card"><h3>Churn &amp; retention</h3><div class="sub">Rolling 6 months</div>
+            <div class="grid g4" style="grid-template-columns:repeat(2,1fr);gap:12px">
+              <div><small style="color:var(--muted)">Retention</small><div style="font-size:22px;font-weight:700">91%</div></div>
+              <div><small style="color:var(--muted)">Churn</small><div style="font-size:22px;font-weight:700">4.2%</div></div>
+              <div><small style="color:var(--muted)">Avg. tenure</small><div style="font-size:22px;font-weight:700">9.4 mo</div></div>
+              <div><small style="color:var(--muted)">NPS</small><div style="font-size:22px;font-weight:700">62</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AUDIT -->
+      <section class="page" data-page="audit">
+        <div class="card" style="padding:0"><div class="table-wrap"><table>
+          <thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Object</th><th>Branch</th></tr></thead>
+          <tbody>
+            <tr><td>24 Nov, 10:14</td><td>Harika K.</td><td>Checked in member</td><td>Ananya R.</td><td>Madhapur</td></tr>
+            <tr><td>24 Nov, 09:58</td><td>Madhapur Mgr</td><td>Approved booking</td><td>Vrinda Labs · Lotus</td><td>Madhapur</td></tr>
+            <tr><td>24 Nov, 09:31</td><td>Admin</td><td>Changed plan price</td><td>Dedicated desk</td><td>All</td></tr>
+            <tr><td>23 Nov, 18:02</td><td>Sunil N.</td><td>Marked seat maintenance</td><td>D-19</td><td>HITEC City</td></tr>
+            <tr><td>23 Nov, 16:45</td><td>Admin</td><td>Refund issued</td><td>INV-2610-0029 · ₹1,200</td><td>Kondapur</td></tr>
+          </tbody></table></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const pages={dash:'Dashboard',branches:'Branches',members:'Members & CRM',plans:'Plans & pricing',billing:'Billing',inventory:'Inventory',access:'Access & devices',tickets:'Service tickets',staff:'Staff & roles',reports:'Reports',audit:'Audit log'};
+function show(p){
+  document.querySelectorAll('.page').forEach(s=>s.classList.toggle('on',s.dataset.page===p));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.p===p));
+  document.getElementById('title').textContent=pages[p];
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('#nav a').forEach(a=>a.onclick=()=>show(a.dataset.p));
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('show'),2300);}
+
+/* ---------- data ---------- */
+const BRANCHES=[
+  {n:'Madhapur',occ:82,rev:'₹11.2L',cap:'120 seats',st:'ok'},
+  {n:'HITEC City',occ:76,rev:'₹9.8L',cap:'140 seats',st:'ok'},
+  {n:'Kondapur',occ:64,rev:'₹7.1L',cap:'90 seats',st:'warn'},
+  {n:'Gachibowli',occ:71,rev:'₹8.4L',cap:'110 seats',st:'ok'},
+  {n:'Kokapet',occ:48,rev:'₹4.6L',cap:'80 seats',st:'bad'},
+  {n:'Financial District',occ:59,rev:'₹5.9L',cap:'75 seats',st:'warn'}
+];
+const MEMBERS=[
+  {n:'Ananya Rao',c:'Vrinda Labs',p:'Dedicated desk',b:'Madhapur',s:'active',d:0},
+  {n:'Kiran Mehta',c:'Vrinda Labs',p:'Dedicated desk',b:'Madhapur',s:'active',d:8999},
+  {n:'Mohd. Irfan',c:'CodeNest',p:'Cabin 2',b:'Madhapur',s:'active',d:15200},
+  {n:'Divya Tripathi',c:'Freelance',p:'Hot desk (10)',b:'HITEC City',s:'trial',d:0},
+  {n:'Sameer Joshi',c:'Joshi Analytics',p:'Hot desk (20)',b:'Kondapur',s:'overdue',d:2400},
+  {n:'Neha Prasad',c:'Pixelcraft',p:'Dedicated desk',b:'Gachibowli',s:'active',d:0},
+  {n:'Rohan Das',c:'Seed Ventures',p:'Private office (4)',b:'Kokapet',s:'overdue',d:38000}
+];
+const INVOICES=[
+  {id:'INV-2611-0042',m:'Ananya Rao',i:'Dedicated desk · Nov',a:8999,s:'Unpaid',due:'30 Nov'},
+  {id:'INV-2611-0040',m:'Kiran Mehta',i:'Dedicated desk · Nov',a:8999,s:'Paid',due:'30 Nov'},
+  {id:'INV-2611-0039',m:'Sameer Joshi',i:'Hot desk (20) · Oct',a:2400,s:'Overdue',due:'05 Nov'},
+  {id:'INV-2611-0037',m:'Rohan Das',i:'Private office (4) · Oct',a:38000,s:'Overdue',due:'01 Nov'},
+  {id:'INV-2611-0035',m:'Neha Prasad',i:'Dedicated desk · Nov',a:8999,s:'Paid',due:'30 Nov'},
+  {id:'INV-2611-0031',m:'Mohd. Irfan',i:'Cabin 2 · Nov',a:15200,s:'Paid',due:'30 Nov'}
+];
+const INVENTORY=[
+  {i:'Coffee beans (kg)',b:'Madhapur',q:4,min:5},{i:'Oat milk (L)',b:'Madhapur',q:0,min:6},{i:'Tea bags',b:'HITEC City',q:120,min:60},{i:'Paper cups',b:'Kondapur',q:150,min:200},{i:'A4 paper (reams)',b:'Gachibowli',q:18,min:10}
+];
+const DOORS=[
+  {d:'Main gate',b:'Madhapur',s:'Online',a:'Members 24/7'},{d:'Lotus room',b:'Madhapur',s:'Online',a:'Booking holders'},{d:'Cabin 2',b:'Madhapur',s:'Online',a:'Cabin tenant'},{d:'Main gate',b:'Kokapet',s:'Offline',a:'Members 24/7'},{d:'Cafe door',b:'HITEC City',s:'Online',a:'All members'}
+];
+const TICKETS=[
+  {t:'Desk lamp flickers',c:'Maintenance',m:'Ananya Rao',b:'Madhapur',p:'Normal',a:'Sunil N.',s:'In progress'},
+  {t:'AC too cold in Banyan room',c:'Facilities',m:'Divya Tripathi',b:'HITEC City',p:'Urgent',a:'Unassigned',s:'Open'},
+  {t:'Wi-Fi slow on floor 2',c:'IT',m:'Kiran Mehta',b:'Madhapur',p:'Normal',a:'Harika K.',s:'In progress'},
+  {t:'Oat milk out of stock',c:'Cafe',m:'Front desk',b:'Madhapur',p:'Normal',a:'Asha V.',s:'Open'},
+  {t:'Projector not detected',c:'IT',m:'Neha Prasad',b:'Gachibowli',p:'Urgent',a:'Sunil N.',s:'Open'}
+];
+const PLANS=[
+  {n:'Hot desk',p:'₹4,999',u:'/mo · flexible',f:['Any open desk','Business hours','Locker 1 month/yr','2 meeting hrs']},
+  {n:'Dedicated desk',p:'₹8,999',u:'/mo',f:['Your own desk','24/7 access','Locker','4 meeting hrs']},
+  {n:'Private cabin (4)',p:'₹38,000',u:'/mo',f:['Lockable cabin','24/7 access','Printing credits','10 meeting hrs']},
+  {n:'Virtual office',p:'₹1,499',u:'/mo',f:['Business address','Mail handling','Meeting credits 2 hrs']}
+];
+
+/* ---------- renderers ---------- */
+const ini=n=>n.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+const pill=(t,k)=>`<span class="pill p-${k}">${t}</span>`;
+const statusPill={active:pill('Active','ok'),trial:pill('Trial','info'),overdue:pill('Overdue','bad')};
+function renderMembers(f='all'){
+  const list=MEMBERS.filter(m=>f==='all'||m.s===f);
+  document.getElementById('memBody').innerHTML=list.map(m=>`<tr onclick="toast('Opened profile: ${m.n}')"><td><span class="av">${ini(m.n)}</span>${m.n}</td><td>${m.c}</td><td>${m.p}</td><td>${m.b}</td><td>${statusPill[m.s]}</td><td>${m.d?'₹'+m.d.toLocaleString('en-IN'):'–'}</td><td><button class="btn ghost sm" onclick="event.stopPropagation();toast('Invoice sent to ${m.n}')">Remind</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">No members</td></tr>';
+}
+document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('on',x===b));renderMembers(b.dataset.f);
+});
+function renderBilling(){
+  document.getElementById('invBody').innerHTML=INVOICES.map((v,i)=>{
+    const k=v.s==='Paid'?'ok':v.s==='Overdue'?'bad':'warn';
+    return `<tr><td><b>${v.id}</b></td><td>${v.m}</td><td>${v.i}</td><td>₹${v.a.toLocaleString('en-IN')}</td><td>${pill(v.s,k)}</td><td>${v.due}</td><td>${v.s==='Paid'?'':`<button class="btn sm" onclick="markPaid(${i})">Mark paid</button>`}</td></tr>`;
+  }).join('');
+}
+function markPaid(i){INVOICES[i].s='Paid';renderBilling();toast('Marked paid · receipt sent');}
+function renderInventory(){
+  document.getElementById('invtBody').innerHTML=INVENTORY.map(v=>`<tr><td>${v.i}</td><td>${v.b}</td><td>${v.q}</td><td>${v.min}</td><td>${v.q<v.min?pill('Reorder','bad'):pill('OK','ok')}</td><td><button class="btn ghost sm" onclick="toast('Reorder drafted for ${v.i}')">Reorder</button></td></tr>`).join('');
+}
+function renderDoors(){
+  document.getElementById('doorBody').innerHTML=DOORS.map(d=>`<tr><td>${d.d}</td><td>${d.b}</td><td>${d.s==='Online'?pill('Online','ok'):pill('Offline','bad')}</td><td>${d.a}</td></tr>`).join('');
+}
+function renderTickets(){
+  document.getElementById('tktBody').innerHTML=TICKETS.map(t=>`<tr><td><b>${t.t}</b></td><td>${t.c}</td><td>${t.m}</td><td>${t.b}</td><td>${t.p==='Urgent'?pill('Urgent','bad'):pill('Normal','mute')}</td><td>${t.a}</td><td>${t.s==='Open'?pill('Open','warn'):pill('In progress','info')}</td></tr>`).join('');
+}
+function renderBranches(){
+  const col=o=>o>=75?'var(--ok)':o>=60?'var(--warn)':'var(--bad)';
+  document.getElementById('branchCards').innerHTML=BRANCHES.map(b=>`<div class="card"><div class="flex" style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">${b.n}</b>${pill(b.st==='ok'?'Healthy':b.st==='warn'?'Watch':'Low','mute')}</div>
+    <div class="sub" style="margin:6px 0 0">${b.cap} · ${b.rev} / mo</div>
+    <div style="font-size:26px;font-weight:700;margin-top:12px">${b.occ}%</div><small style="color:var(--muted)">Occupancy</small>
+    <div style="height:8px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:10px"><i style="display:block;height:100%;width:${b.occ}%;background:${col(b.occ)};border-radius:8px"></i></div></div>`).join('');
+  document.getElementById('branchList').innerHTML=BRANCHES.map(b=>`<div><div style="display:flex;justify-content:space-between;font-size:13px"><span>${b.n}</span><b>${b.occ}%</b></div><div style="height:7px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${b.occ}%;background:linear-gradient(90deg,var(--brand),var(--brand-2))"></i></div></div>`).join('');
+}
+function renderPlans(){
+  document.getElementById('planCards').innerHTML=PLANS.map(p=>`<div class="card"><h3>${p.n}</h3><div style="font-size:26px;font-weight:700;margin:10px 0 2px">${p.p}<span style="font-size:13px;color:var(--muted);font-weight:500"> ${p.u}</span></div>
+    <ul style="margin-top:12px;padding-left:18px;color:var(--muted);font-size:13px;line-height:1.9">${p.f.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <div style="margin-top:14px;display:flex;gap:8px"><button class="btn ghost sm" onclick="toast('Plan editor (demo)')">Edit</button><button class="btn ghost sm" onclick="toast('Per-branch pricing (demo)')">Branch prices</button></div></div>`).join('');
+}
+function renderFeed(){
+  const items=[
+    ['var(--ok)','Ananya Rao checked in','Madhapur · 10:14'],
+    ['var(--info)','Booking approved · Lotus room','Madhapur · 09:58'],
+    ['var(--warn)','Invoice overdue · Rohan Das','Kokapet · 09:00'],
+    ['var(--bad)','Door offline · Main gate','Kokapet · 08:41'],
+    ['var(--brand)','New member joined · Pixelcraft','Gachibowli · Yesterday']
+  ];
+  document.getElementById('feed').innerHTML=items.map(i=>`<li><span class="dot" style="background:${i[0]}"></span><div>${i[1]}<small>${i[2]}</small></div></li>`).join('');
+  document.getElementById('mix').innerHTML=[['Dedicated desk',46,'var(--brand)'],['Hot desk',28,'var(--info)'],['Private cabin',14,'var(--ok)'],['Virtual office',12,'var(--warn)']].map(m=>`<div><div style="display:flex;justify-content:space-between;font-size:13px"><span>${m[0]}</span><b>${m[1]}%</b></div><div style="height:8px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${m[1]}%;background:${m[2]}"></i></div></div>`).join('');
+  document.getElementById('utilBars').innerHTML=[['Hot desks',72],['Dedicated desks',91],['Private cabins',100],['Meeting rooms',58]].map(m=>`<div><div style="display:flex;justify-content:space-between;font-size:13px"><span>${m[0]}</span><b>${m[1]}%</b></div><div style="height:8px;background:var(--bg);border-radius:8px;overflow:hidden;margin-top:6px"><i style="display:block;height:100%;width:${m[1]}%;background:linear-gradient(90deg,var(--brand),var(--brand-2))"></i></div></div>`).join('');
+}
+function renderRevenue(){
+  const months=['Jun','Jul','Aug','Sep','Oct','Nov'];
+  const rev=[36,39,41,40,43,48], occ=[58,62,64,66,68,71];
+  const w=760,h=230,pad=28,bw=44;
+  let s=`<svg viewBox="0 0 ${w} ${h}" width="100%" height="100%" preserveAspectRatio="none">`;
+  for(let g=0;g<=4;g++){const y=pad+(h-2*pad)*g/4;s+=`<line x1="0" x2="${w}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-dasharray="3 4"/>`;}
+  const max=60;
+  months.forEach((m,i)=>{
+    const x=40+i*((w-60)/6);const bh=(h-2*pad)*rev[i]/max;
+    s+=`<rect x="${x}" y="${h-pad-bh}" width="${bw}" height="${bh}" rx="8" fill="url(#g)"/>`;
+    s+=`<text x="${x+bw/2}" y="${h-8}" text-anchor="middle" font-size="12" fill="var(--muted)">${m}</text>`;
+    s+=`<text x="${x+bw/2}" y="${h-pad-bh-6}" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="600">${rev[i]}</text>`;
+  });
+  let pts=months.map((m,i)=>[40+i*((w-60)/6)+bw/2,pad+(h-2*pad)*(1-occ[i]/100)]);
+  s+=`<polyline fill="none" stroke="var(--warn)" stroke-width="2.5" points="${pts.map(p=>p.join(',')).join(' ')}"/>`;
+  pts.forEach(p=>s+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="var(--card)" stroke="var(--warn)" stroke-width="2"/>`);
+  s+=`<defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ffb35c"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient></defs></svg>`;
+  document.getElementById('revChart').innerHTML=s;
+}
+
+/* ---------- modal ---------- */
+function openModal(kind){
+  const m=document.getElementById('modal');
+  if(kind==='newMember'){
+    m.innerHTML=`<h3>New member</h3><div class="sub">Create a member and send the onboarding link</div>
+      <div class="fgrid">
+        <label class="f">Full name<input id="nm-name" placeholder="e.g. Priya Shah"></label>
+        <label class="f">Company<input placeholder="Company / freelancer"></label>
+        <label class="f">Email<input placeholder="name@company.com"></label>
+        <label class="f">Phone<input placeholder="+91"></label>
+        <label class="f">Branch<select><option>Madhapur</option><option>HITEC City</option><option>Kondapur</option><option>Gachibowli</option></select></label>
+        <label class="f">Plan<select><option>Dedicated desk · ₹8,999</option><option>Hot desk · ₹4,999</option><option>Private cabin · ₹38,000</option><option>Virtual office · ₹1,499</option></select></label>
+      </div>
+      <div class="foot"><button class="btn ghost" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveMember()">Create member</button></div>`;
+  }
+  document.getElementById('scrim').classList.add('on');
+}
+function saveMember(){
+  const n=document.getElementById('nm-name').value.trim();
+  if(!n){toast('Enter a name');return;}
+  MEMBERS.unshift({n,c:'New',p:'Dedicated desk',b:'Madhapur',s:'trial',d:0});
+  closeModal();renderMembers();show('members');
+  toast('Member created · onboarding link sent');
+}
+function closeModal(){document.getElementById('scrim').classList.remove('on');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ---------- init ---------- */
+renderMembers();renderBilling();renderInventory();renderDoors();renderTickets();renderBranches();renderPlans();renderFeed();renderRevenue();
+</script>
+</body>
+</html>

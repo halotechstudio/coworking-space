@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CoKarma Manager App</title>
+<style>
+  :root{
+    --bg:#0a0a0c; --card:rgba(24,24,31,.55); --ink:#f4f1ea; --muted:#9b978c; --line:rgba(255,255,255,.08);
+    --brand:#ff7a1a; --brand-2:#ffb35c; --ok:#16a870; --warn:#f5c542; --bad:#e04d5b; --info:#3b82f6;
+    --radius:18px; --shadow:0 10px 30px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+  .stage{display:flex;gap:48px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .side{max-width:300px}
+  .side h1{font-size:26px;letter-spacing:-.02em;margin-bottom:8px}
+  .side p{color:var(--muted);line-height:1.5;font-size:14px;margin-bottom:14px}
+  .side a{color:var(--brand);text-decoration:none;font-size:14px}
+  .chip{display:inline-block;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--muted);margin:0 6px 6px 0}
+
+  .phone{width:390px;height:844px;border-radius:44px;background:#0b0d16;padding:12px;box-shadow:0 30px 80px rgba(20,22,40,.35)}
+  .screen{position:relative;width:100%;height:100%;background:var(--bg);border-radius:34px;overflow:hidden;display:flex;flex-direction:column}
+  .status{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600;flex:none}
+  .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:120px;height:26px;border-radius:20px;background:#0b0d16}
+  .view{flex:1;overflow-y:auto;padding:4px 18px 110px;scrollbar-width:none}
+  .view::-webkit-scrollbar{display:none}
+  .page{display:none}.page.active{display:block}
+  .nav{position:absolute;bottom:0;left:0;right:0;height:88px;background:var(--card);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:12px 6px 26px}
+  .nav button{background:none;border:0;color:var(--muted);font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;width:60px;position:relative}
+  .nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .nav button.on{color:var(--brand)}
+  .nav .dot{position:absolute;top:-2px;right:12px;min-width:16px;height:16px;border-radius:8px;background:var(--bad);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+  .hdr{display:flex;align-items:center;justify-content:space-between;margin:10px 0 16px}
+  .hdr h2{font-size:22px}
+  .hello{font-size:13px;color:var(--muted)}
+  .avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+  .kpi small{color:var(--muted);font-size:12px}
+  .kpi b{display:block;font-size:24px;margin-top:4px;letter-spacing:-.02em}
+  .kpi .d{font-size:11px;margin-top:4px}
+  .up{color:var(--ok)}.down{color:var(--bad)}
+  .section{margin:20px 0 10px;display:flex;justify-content:space-between;align-items:center}
+  .section h3{font-size:16px}
+  .section a{font-size:13px;color:var(--brand);text-decoration:none;cursor:pointer}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:10px}
+  .card .t{font-weight:600;font-size:15px}
+  .card .s{color:var(--muted);font-size:13px;margin-top:3px}
+  .tag{font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .tag.ok{background:rgba(22,168,112,.14);color:var(--ok)}
+  .tag.warn{background:rgba(232,154,28,.16);color:var(--warn)}
+  .tag.bad{background:rgba(224,77,91,.14);color:var(--bad)}
+  .tag.info{background:rgba(59,130,246,.14);color:var(--info)}
+  .tag.brand{background:rgba(15,157,138,.14);color:var(--brand)}
+  .flex{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .btn{border:0;border-radius:14px;padding:11px 13px;font-weight:600;font-size:13px;cursor:pointer;background:var(--brand);color:#fff;flex:1;transition:transform .08s}
+  .btn:active{transform:scale(.97)}
+  .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .btn.sm{flex:none;padding:8px 11px;font-size:12px}
+  .btn.bad{background:var(--bad)}
+  .row{display:flex;gap:8px;margin-top:10px}
+
+  .zones{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+  .zone{border-radius:14px;padding:10px 6px;text-align:center;color:#fff;font-size:11px;cursor:pointer;border:0}
+  .zone b{display:block;font-size:17px}
+  .zone.hi{background:var(--bad)}.zone.mid{background:var(--warn)}.zone.lo{background:var(--ok)}
+  .zone.sel{outline:3px solid var(--ink);outline-offset:2px}
+  .floor{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:14px}
+  .seat{aspect-ratio:1;border-radius:8px;font-size:9px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;cursor:pointer;border:0}
+  .seat.free{background:var(--line);color:var(--muted)}
+  .seat.in{background:var(--ok)}
+  .seat.res{background:var(--info)}
+  .seat.maint{background:var(--bad)}
+  .legend{display:flex;gap:12px;font-size:11px;color:var(--muted);margin-bottom:10px;flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:middle}
+
+  .seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:14px}
+  .seg button{flex:1;border:0;background:none;padding:8px 4px;border-radius:10px;font-size:12px;color:var(--muted);cursor:pointer;font-weight:600}
+  .seg button.on{background:var(--brand);color:#fff}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;font-size:13px;color:var(--muted)}
+  .field input,.field select,.field textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;outline:none}
+  .field textarea{min-height:72px;resize:none}
+
+  .toast{position:absolute;left:16px;right:16px;bottom:104px;background:#0f2a24;color:#fff;padding:12px 14px;border-radius:14px;font-size:13px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;text-align:center;z-index:9}
+  .toast.show{opacity:1;transform:none}
+  .sheet{position:absolute;inset:0;background:rgba(5,15,12,.5);display:none;align-items:flex-end;z-index:8}
+  .sheet.show{display:flex}
+  .sheet .panel{background:var(--card);width:100%;border-radius:28px 28px 0 0;padding:20px 20px 34px;animation:up .25s ease;max-height:80%;overflow-y:auto}
+  @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+  .sheet h3{margin-bottom:12px}
+  .av{width:34px;height:34px;border-radius:50%;background:rgba(15,157,138,.15);color:var(--brand);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex:none}
+  .bars{display:flex;align-items:flex-end;gap:6px;height:90px;margin-top:8px}
+  .bars div{flex:1;background:linear-gradient(180deg,var(--brand-2),var(--brand));border-radius:6px 6px 2px 2px;min-height:6px}
+  .bars span{font-size:9px;color:var(--muted);text-align:center;display:block;margin-top:4px}
+  @media (max-width:440px){
+    body{padding:0;background:var(--card)}
+    .side{display:none}.stage{gap:0}
+    .phone{width:100vw;height:100vh;height:100dvh;border-radius:0;padding:0;box-shadow:none}
+    .screen{border-radius:0}.notch{display:none}
+  }
+  /* frosted glass layer */
+  body{background-image:radial-gradient(circle at 20% 10%,rgba(255,122,26,.22),transparent 42%),radial-gradient(circle at 85% 90%,rgba(255,179,92,.12),transparent 46%)}
+  .card,.kpi,.nav,.toast,.sheet .panel{backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%)}
+  .card,.kpi,.nav,.sheet .panel{border-color:rgba(255,255,255,.10)}
+  .btn{color:#0a0a0c}
+  .btn.ghost{color:var(--ink)}
+  .btn.bad{color:#fff}
+  .seg button.on{color:#0a0a0c}
+  .av{background:rgba(255,122,26,.16);color:var(--brand)}
+  .tag.brand{background:rgba(255,122,26,.16);color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="side">
+    <h1>CoKarma &middot; Manager app</h1>
+    <p>Run the floor from your phone: live occupancy, guest approvals, booking requests, tickets, members, events and cafe stock. Tap around; all data is sample.</p>
+    <p><span class="chip">Branch: Madhapur</span><span class="chip">Shift: Day</span><span class="chip">Offline demo</span></p>
+    <a href="index.html">&larr; Back to hub</a>
+  </div>
+
+  <div class="phone">
+    <div class="screen">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span>5G &middot; 88%</span></div>
+
+      <section class="view">
+        <!-- FLOOR -->
+        <div class="page active" data-page="floor">
+          <div class="hdr"><div><div class="hello">Madhapur &middot; Day shift</div><h2>Floor overview</h2></div><div class="avatar">MP</div></div>
+          <div class="kpis">
+            <div class="kpi"><small>Occupancy now</small><b id="occ">64%</b><div class="d up">+6% vs last Tue</div></div>
+            <div class="kpi"><small>Checked in</small><b id="cin">41</b><div class="d" style="color:var(--muted)">of 63 members on site</div></div>
+            <div class="kpi"><small>Pending approvals</small><b id="papp">3</b><div class="d down">2 guests waiting</div></div>
+            <div class="kpi"><small>Open tickets</small><b id="tkt">7</b><div class="d" style="color:var(--muted)">2 urgent</div></div>
+          </div>
+          <div class="section"><h3>Zones</h3><a onclick="go('desks')">Floor map</a></div>
+          <div class="zones" id="zones"></div>
+          <div class="section"><h3>Occupancy by hour</h3></div>
+          <div class="card">
+            <div class="flex"><span class="t">Today</span><span class="s">Peak 14:00 &middot; 82%</span></div>
+            <div class="bars" id="bars"></div>
+          </div>
+          <div class="section"><h3>Live check-ins</h3></div>
+          <div id="checkins"></div>
+        </div>
+
+        <!-- GUESTS -->
+        <div class="page" data-page="guests">
+          <div class="hdr"><h2>Guests &amp; visitors</h2></div>
+          <div class="seg" id="gseg"><button class="on" data-f="pending">Pending</button><button data-f="in">Inside</button><button data-f="done">Left</button></div>
+          <div id="guestlist"></div>
+          <div class="section"><h3>Register walk-in</h3></div>
+          <div class="field"><span>Visitor name</span><input id="wname" placeholder="Full name"></div>
+          <div class="field"><span>Host member</span><select id="whost"><option>Ananya R. (Desk D-14)</option><option>Kiran (Desk F-03)</option><option>Mohd. Irfan (Cabin 2)</option></select></div>
+          <div class="field"><span>Purpose</span><input id="wpur" placeholder="Meeting, interview, delivery..."></div>
+          <button class="btn" style="width:100%" onclick="addWalkin()">Issue visitor pass</button>
+        </div>
+
+        <!-- DESKS -->
+        <div class="page" data-page="desks">
+          <div class="hdr"><h2>Floor map</h2></div>
+          <div class="legend"><span><i style="background:var(--line)"></i>Free</span><span><i style="background:var(--ok)"></i>Checked in</span><span><i style="background:var(--info)"></i>Reserved</span><span><i style="background:var(--bad)"></i>Maintenance</span></div>
+          <div class="zones" style="grid-template-columns:repeat(3,1fr)">
+            <button class="zone lo sel" data-z="A">Zone A<b>Hot</b></button>
+            <button class="zone mid" data-z="B">Zone B<b>Ded.</b></button>
+            <button class="zone lo" data-z="C">Cabins<b>3</b></button>
+          </div>
+          <div class="floor" id="floor"></div>
+          <div class="card"><div class="t" id="seatinfo">Tap a seat to see details</div><div class="s" id="seatsub">Zone A &middot; Hot desks</div>
+            <div class="row"><button class="btn ghost sm" onclick="toggleMaint()">Mark maintenance</button><button class="btn sm" onclick="toast('Seat reassigned to walk-in')">Reassign</button></div>
+          </div>
+        </div>
+
+        <!-- REQUESTS -->
+        <div class="page" data-page="req">
+          <div class="hdr"><h2>Booking requests</h2></div>
+          <div id="reqs"></div>
+          <div class="section"><h3>Room schedule &middot; Lotus</h3></div>
+          <div class="card">
+            <div class="flex"><div><div class="t">09:00 &ndash; 10:00</div><div class="s">Vrinda Labs &middot; Standup</div></div><span class="tag info">Booked</span></div>
+            <div class="flex" style="margin-top:10px"><div><div class="t">11:00 &ndash; 12:00</div><div class="s">Ananya R.</div></div><span class="tag ok">Checked in</span></div>
+            <div class="flex" style="margin-top:10px"><div><div class="t">14:00 &ndash; 15:30</div><div class="s">Open</div></div><button class="btn sm" onclick="toast('Slot blocked for internal use')">Block</button></div>
+          </div>
+        </div>
+
+        <!-- TICKETS -->
+        <div class="page" data-page="tickets">
+          <div class="hdr"><h2>Service tickets</h2></div>
+          <div class="seg" id="tseg"><button class="on" data-f="open">Open</button><button data-f="prog">In progress</button><button data-f="done">Resolved</button></div>
+          <div id="tlist"></div>
+        </div>
+
+        <!-- MEMBERS -->
+        <div class="page" data-page="members">
+          <div class="hdr"><h2>Members</h2></div>
+          <div class="kpis" style="margin-bottom:12px">
+            <div class="kpi"><small>Active</small><b>63</b></div>
+            <div class="kpi"><small>Dues pending</small><b style="color:var(--warn)">&#8377;24.1k</b></div>
+          </div>
+          <div id="memlist"></div>
+          <button class="btn" style="width:100%;margin-top:6px" onclick="toast('Add-member form opened on the admin web')">+ Add member</button>
+        </div>
+
+        <!-- EVENTS -->
+        <div class="page" data-page="events">
+          <div class="hdr"><h2>Events</h2></div>
+          <div class="card">
+            <div class="flex"><div><div class="t">Founders' Coffee Chat</div><div class="s">Nov 28 &middot; Cafe &middot; 34/40 RSVPs</div></div><span class="tag ok">Live</span></div>
+            <div style="height:8px;background:var(--line);border-radius:8px;margin-top:10px;overflow:hidden"><i style="display:block;height:100%;width:85%;background:var(--brand)"></i></div>
+          </div>
+          <div class="card">
+            <div class="flex"><div><div class="t">Design Critique Night</div><div class="s">Nov 30 &middot; Lotus &middot; 12/15</div></div><span class="tag info">Planned</span></div>
+          </div>
+          <div class="section"><h3>Create event</h3></div>
+          <div class="field"><span>Title</span><input id="etitle" placeholder="e.g. Friday open mic"></div>
+          <div class="field"><span>Space and capacity</span><select><option>Cafe &middot; 40</option><option>Main hall &middot; 120</option><option>Lotus room &middot; 6</option></select></div>
+          <button class="btn" style="width:100%" onclick="createEvent()">Publish to members</button>
+        </div>
+
+        <!-- CAFE -->
+        <div class="page" data-page="cafe">
+          <div class="hdr"><h2>Cafe &amp; stock</h2></div>
+          <div id="stock"></div>
+          <div class="section"><h3>Shift handover</h3></div>
+          <div class="card"><div class="t">Opening checklist</div>
+            <div class="s" style="margin-top:8px" id="checklist"></div>
+          </div>
+        </div>
+      </section>
+
+      <nav class="nav" id="nav">
+        <button class="on" data-go="floor"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Floor</button>
+        <button data-go="guests"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 11l2 2 4-4"/></svg>Guests<span class="dot" id="gdot">3</span></button>
+        <button data-go="req"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/></svg>Bookings</button>
+        <button data-go="tickets"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Tickets</button>
+        <button data-go="members"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>Members</button>
+        <button data-go="events"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>Events</button>
+      </nav>
+
+      <div class="sheet" id="sheet" onclick="if(event.target===this)closeSheet()"><div class="panel" id="sheet-body"></div></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const pageOrder=['floor','guests','desks','req','tickets','members','events','cafe'];
+function go(p){
+  document.querySelectorAll('.page').forEach(s=>s.classList.toggle('active',s.dataset.page===p));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===p));
+  document.querySelector('.view').scrollTop=0;
+}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.go));
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('show'),2200);}
+function closeSheet(){document.getElementById('sheet').classList.remove('show');}
+
+/* ---------- data ---------- */
+let guests=[
+  {id:1,n:'Rahul M.',h:'Ananya R.',p:'Client meeting',s:'pending',t:'15:00'},
+  {id:2,n:'Priya S.',h:'Kiran',p:'Interview',s:'pending',t:'15:30'},
+  {id:3,n:'Deliveryman · Blue Dart',h:'Front desk',p:'Parcel drop',s:'pending',t:'Now'},
+  {id:4,n:'Sameer J.',h:'Mohd. Irfan',p:'Pair session',s:'in',t:'13:10'},
+  {id:5,n:'Divya T.',h:'Kiran',p:'Workshop',s:'done',t:'11:00 – 12:30'}
+];
+let tickets=[
+  {id:1,t:'Desk lamp flickers (D-14 area)',c:'Maintenance',f:'Ananya R.',s:'open',u:true},
+  {id:2,t:'Wi-Fi slow on floor 2',c:'IT',f:'Kiran',s:'prog',u:false},
+  {id:3,t:'Cafe oat milk out of stock',c:'Cafe',f:'Front desk',s:'open',u:false},
+  {id:4,t:'Projector cable needed',c:'IT',f:'Mohd. Irfan',s:'done',u:false},
+  {id:5,t:'AC too cold in Banyan room',c:'Facilities',f:'Divya T.',s:'open',u:true}
+];
+let reqs=[
+  {id:1,m:'Vrinda Labs',r:'Lotus room',d:'Tue 14:00 – 15:30',st:'Pending'},
+  {id:2,m:'Mohd. Irfan',r:'Cabin 2 (full day)',d:'Wed 09:00 – 18:00',st:'Pending'}
+];
+const members=[
+  {n:'Ananya Rao',p:'Dedicated desk',s:'Active',due:0},
+  {n:'Kiran Mehta',p:'Dedicated desk',s:'Active',due:8999},
+  {n:'Mohd. Irfan',p:'Cabin 2',s:'Active',due:15200},
+  {n:'Divya Tripathi',p:'Hot desk (10)',s:'Trial',due:0},
+  {n:'Sameer Joshi',p:'Hot desk (20)',s:'Overdue',due:2400}
+];
+const stock=[{i:'Coffee beans (kg)',q:4,min:5},{i:'Oat milk (L)',q:0,min:6},{i:'Tea bags',q:120,min:60},{i:'Paper cups',q:300,min:200}];
+const checklist=['Unlock cafe & check fridge temp','Count cash float','Test printer on floor 1 & 2','Check room bookings for today'];
+const checkins=[{n:'Ananya R.',w:'Desk D-14',t:'09:12'},{n:'Mohd. Irfan',w:'Cabin 2',t:'09:40'},{n:'Kiran M.',w:'Desk F-03',t:'10:05'},{n:'Sameer J.',w:'Guest · Hot desk',t:'13:10'}];
+
+/* ---------- floor ---------- */
+const zonesData=[{n:'Hot desks',v:72,c:'hi'},{n:'Dedicated',v:58,c:'mid'},{n:'Cabins',v:100,c:'hi'},{n:'Lotus / Banyan',v:45,c:'lo'}];
+function renderZones(){
+  const el=document.getElementById('zones');el.innerHTML='';
+  zonesData.forEach(z=>el.insertAdjacentHTML('beforeend',`<button class="zone ${z.c}"><b>${z.v}%</b>${z.n}</button>`));
+}
+function renderBars(){
+  const vals=[20,34,48,62,78,82,70,54,46,38];
+  const hrs=['9','10','11','12','13','14','15','16','17','18'];
+  document.getElementById('bars').innerHTML=vals.map((v,i)=>`<div style="height:${v}%" title="${v}%"><span style="position:absolute;margin-top:98px;display:none"></span></div>`).join('')
+    + '';
+  const wrap=document.getElementById('bars');
+  wrap.style.paddingBottom='14px';
+  wrap.innerHTML=vals.map((v,i)=>`<div style="height:${v}%;display:flex;flex-direction:column;justify-content:flex-end;position:relative"><span style="position:absolute;bottom:-16px;left:0;right:0">${hrs[i]}</span></div>`).join('');
+  wrap.querySelectorAll('div').forEach((d,i)=>{d.style.background=`linear-gradient(180deg,var(--brand-2),var(--brand))`;d.style.borderRadius='6px 6px 2px 2px';d.style.flex='1';d.style.minHeight='6px';});
+}
+function renderCheckins(){
+  document.getElementById('checkins').innerHTML=checkins.map(c=>`<div class="card"><div class="flex"><div class="flex" style="justify-content:flex-start"><div class="av">${c.n.split(' ').map(x=>x[0]).join('').slice(0,2)}</div><div><div class="t">${c.n}</div><div class="s">${c.w}</div></div></div><span class="s">${c.t}</span></div></div>`).join('');
+}
+
+/* ---------- guests ---------- */
+let gFilter='pending';
+function renderGuests(){
+  const el=document.getElementById('guestlist');
+  const list=guests.filter(g=>g.s===gFilter);
+  el.innerHTML=list.length?'':'<div class="card"><div class="s">Nothing here.</div></div>';
+  list.forEach(g=>{
+    const d=document.createElement('div');d.className='card';
+    const act=g.s==='pending'?`<div class="row"><button class="btn bad sm" data-a="no">Deny</button><button class="btn sm" data-a="yes">Approve</button></div>`
+      :g.s==='in'?`<div class="row"><button class="btn ghost sm" data-a="out">Check out</button></div>`:'';
+    d.innerHTML=`<div class="flex"><div><div class="t">${g.n}</div><div class="s">Host: ${g.h} &middot; ${g.p}</div><div class="s">${g.t}</div></div><span class="tag ${g.s==='pending'?'warn':g.s==='in'?'ok':'brand'}">${g.s==='pending'?'Pending':g.s==='in'?'Inside':'Left'}</span></div>${act}`;
+    d.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+      const a=b.dataset.a;
+      if(a==='yes'){g.s='in';toast(g.n+' approved. Pass sent.');}
+      if(a==='no'){g.s='done';toast(g.n+' denied');}
+      if(a==='out'){g.s='done';toast(g.n+' checked out');}
+      renderGuests();renderBadge();
+    });
+    el.appendChild(d);
+  });
+}
+function renderBadge(){
+  const n=guests.filter(g=>g.s==='pending').length;
+  document.getElementById('gdot').textContent=n;document.getElementById('gdot').style.display=n?'flex':'none';
+  document.getElementById('papp').textContent=n;
+}
+document.querySelectorAll('#gseg button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#gseg button').forEach(x=>x.classList.toggle('on',x===b));gFilter=b.dataset.f;renderGuests();
+});
+function addWalkin(){
+  const n=document.getElementById('wname').value.trim();
+  if(!n){toast('Enter visitor name');return;}
+  guests.unshift({id:Date.now(),n,h:document.getElementById('whost').value.split(' (')[0],p:document.getElementById('wpur').value||'Visit',s:'pending',t:'Now'});
+  document.getElementById('wname').value='';document.getElementById('wpur').value='';
+  renderBadge();gFilter='pending';
+  document.querySelectorAll('#gseg button').forEach(x=>x.classList.toggle('on',x.dataset.f==='pending'));
+  renderGuests();toast('Visitor pass issued. Awaiting host approval.');
+}
+
+/* ---------- floor map ---------- */
+const seatsByZone={
+  A:Array.from({length:18},(_,i)=>({id:'A'+(i+1),s:['in','free','res','in','free','free','maint','in','free','res','free','in','in','free','free','res','in','free'][i]})),
+  B:Array.from({length:12},(_,i)=>({id:'D'+(i+10),s:['in','in','free','in','res','in','free','in','in','free','in','free'][i]})),
+  C:[{id:'Cabin 1',s:'in'},{id:'Cabin 2',s:'in'},{id:'Cabin 5',s:'free'}]
+};
+let curZone='A', selSeat=null;
+function renderFloor(){
+  const el=document.getElementById('floor');el.innerHTML='';
+  const list=seatsByZone[curZone];
+  list.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='seat '+s.s;b.textContent=curZone==='C'?'':s.id.replace(/^[A-Z]/,'').slice(-2);
+    if(curZone==='C'){b.style.gridColumn='span 2';b.style.aspectRatio='auto';b.style.height='42px';b.textContent=s.id;b.style.fontSize='10px';}
+    b.onclick=()=>{selSeat=s;updateSeat();};
+    el.appendChild(b);
+  });
+  el.style.gridTemplateColumns=curZone==='C'?'repeat(3,1fr)':'repeat(6,1fr)';
+}
+function updateSeat(){
+  if(!selSeat)return;
+  const labels={in:'Checked in',free:'Free',res:'Reserved',maint:'Maintenance'};
+  document.getElementById('seatinfo').textContent=selSeat.id+' · '+labels[selSeat.s];
+  document.getElementById('seatsub').textContent=({A:'Hot desks',B:'Dedicated desks',C:'Private cabins'})[curZone];
+}
+function toggleMaint(){
+  if(!selSeat){toast('Tap a seat first');return;}
+  selSeat.s=selSeat.s==='maint'?'free':'maint';
+  renderFloor();updateSeat();toast(selSeat.id+(selSeat.s==='maint'?' marked for maintenance':' back in service'));
+}
+document.querySelectorAll('.zone[data-z]').forEach(z=>z.onclick=()=>{
+  curZone=z.dataset.z;
+  document.querySelectorAll('.zone[data-z]').forEach(x=>x.classList.toggle('sel',x===z));
+  selSeat=null;renderFloor();document.getElementById('seatinfo').textContent='Tap a seat to see details';document.getElementById('seatsub').textContent=({A:'Zone A · Hot desks',B:'Zone B · Dedicated desks',C:'Cabins'})[curZone];
+});
+
+/* ---------- requests ---------- */
+function renderReqs(){
+  const el=document.getElementById('reqs');el.innerHTML='';
+  if(!reqs.length){el.innerHTML='<div class="card"><div class="s">No pending requests.</div></div>';return;}
+  reqs.forEach(r=>{
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML=`<div class="flex"><div><div class="t">${r.m}</div><div class="s">${r.r} &middot; ${r.d}</div></div><span class="tag warn">${r.st}</span></div>
+      <div class="row"><button class="btn ghost sm" data-a="no">Decline</button><button class="btn sm" data-a="yes">Approve</button></div>`;
+    d.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{
+      reqs=reqs.filter(x=>x!==r);renderReqs();
+      toast(b.dataset.a==='yes'?r.m+' booking approved':r.m+' booking declined');
+    });
+    el.appendChild(d);
+  });
+}
+
+/* ---------- tickets ---------- */
+let tFilter='open';
+function renderTickets(){
+  const el=document.getElementById('tlist');el.innerHTML='';
+  const map={open:'open',prog:'prog',done:'done'};
+  const list=tickets.filter(t=>t.s===map[tFilter]);
+  if(!list.length){el.innerHTML='<div class="card"><div class="s">Nothing in this queue.</div></div>';}
+  list.forEach(t=>{
+    const d=document.createElement('div');d.className='card';
+    const nxt=t.s==='open'?'Start':t.s==='prog'?'Resolve':'';
+    d.innerHTML=`<div class="flex"><div><div class="t">${t.t}</div><div class="s">${t.c} &middot; ${t.f}</div></div>${t.u?'<span class="tag bad">Urgent</span>':''}</div>
+      ${nxt?`<div class="row"><button class="btn sm">${nxt}</button></div>`:''}`;
+    const b=d.querySelector('button');
+    if(b)b.onclick=()=>{t.s=t.s==='open'?'prog':'done';renderTickets();updateKpis();toast('Ticket updated');};
+    el.appendChild(d);
+  });
+}
+function updateKpis(){
+  const open=tickets.filter(t=>t.s!=='done').length;
+  document.getElementById('tkt').textContent=open;
+}
+document.querySelectorAll('#tseg button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#tseg button').forEach(x=>x.classList.toggle('on',x===b));tFilter=b.dataset.f;renderTickets();
+});
+
+/* ---------- members ---------- */
+function renderMembers(){
+  document.getElementById('memlist').innerHTML=members.map(m=>`<div class="card"><div class="flex"><div class="flex" style="justify-content:flex-start"><div class="av">${m.n.split(' ').map(x=>x[0]).join('').slice(0,2)}</div><div><div class="t">${m.n}</div><div class="s">${m.p}${m.due?' · Due ₹'+m.due.toLocaleString('en-IN'):''}</div></div></div><span class="tag ${m.s==='Active'?'ok':m.s==='Trial'?'info':'bad'}">${m.s}</span></div></div>`).join('');
+}
+
+/* ---------- events ---------- */
+function createEvent(){
+  const t=document.getElementById('etitle').value.trim();
+  if(!t){toast('Add an event title');return;}
+  toast('Published: '+t+' to members');
+  document.getElementById('etitle').value='';
+}
+
+/* ---------- cafe ---------- */
+function renderStock(){
+  document.getElementById('stock').innerHTML=stock.map(s=>{
+    const low=s.q<s.min;
+    return `<div class="card"><div class="flex"><div><div class="t">${s.i}</div><div class="s">${s.q} on hand · reorder at ${s.min}</div></div>${low?'<span class="tag bad">Reorder</span>':'<span class="tag ok">OK</span>'}</div></div>`;
+  }).join('');
+  document.getElementById('checklist').innerHTML=checklist.map((c,i)=>`<label style="display:flex;gap:10px;align-items:center;padding:6px 0"><input type="checkbox" ${i<2?'checked':''} onchange="toast('Checklist updated')"> ${c}</label>`).join('');
+}
+
+/* ---------- init ---------- */
+renderZones();renderBars();renderCheckins();renderGuests();renderBadge();renderFloor();renderReqs();renderTickets();renderMembers();renderStock();
+</script>
+</body>
+</html>
